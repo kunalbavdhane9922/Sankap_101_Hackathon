@@ -198,11 +198,51 @@
   align-items: center;
   gap: var(--space-2);
   margin-bottom: var(--space-1);
+  position: relative;
+  background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
+  border-radius: 50px;
+  box-shadow: 0 0 12px 2px rgba(125, 76, 255, 0.10), 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.3s;
+}
+.circular-progress:hover {
+  box-shadow: 0 0 24px 6px #7d4cff55, 0 4px 16px rgba(0,0,0,0.10);
+}
+.circular-progress svg {
+  filter: drop-shadow(0 0 8px #7d4cff33);
 }
 .circular-progress-label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  font-family: var(--font-main);
+  font-weight: 600;
+  color: #222;
+  position: relative;
+}
+.circular-progress-label::before {
+  content: '\1F3C6'; /* Trophy emoji */
+  display: none;
+  font-size: 1.2em;
+  margin-bottom: 2px;
+  color: gold;
+}
+.circular-progress.level-up .circular-progress-label::before {
+  display: inline-block;
+  animation: pop-in 0.5s cubic-bezier(.4,2,.6,1) 1;
+}
+.circular-progress.level-up {
+  animation: confetti-burst 1s cubic-bezier(.4,2,.6,1) 1;
+  box-shadow: 0 0 32px 8px #ffd70099, 0 4px 16px rgba(0,0,0,0.10);
+}
+@keyframes pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes confetti-burst {
+  0% { box-shadow: 0 0 0 0 #ffd70000; }
+  60% { box-shadow: 0 0 48px 16px #ffd700cc; }
+  100% { box-shadow: 0 0 32px 8px #ffd70099; }
 }
 .dashboard-payments {
   background: var(--color-surface);

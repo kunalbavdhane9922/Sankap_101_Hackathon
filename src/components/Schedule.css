@@ -84,22 +84,48 @@ body {
   justify-content: flex-end;
 }
 
+/* Gamified Badges */
 .badge {
   padding: var(--space-1) var(--space-4);
   border-radius: var(--radius-md);
   font-size: 0.98rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
   display: inline-block;
+  background: linear-gradient(90deg, #a18aff 0%, #7d4cff 100%);
+  box-shadow: 0 2px 8px #7d4cff33, 0 1px 2px #0001;
+  position: relative;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 2px #0002;
+  animation: badge-pop 0.5s cubic-bezier(.4,2,.6,1);
 }
 .scheduled {
-  background: #a18aff;
+  background: linear-gradient(90deg, #a18aff 0%, #ffd700 100%);
 }
 .posted {
-  background: #4ecb8f;
+  background: linear-gradient(90deg, #4ecb8f 0%, #22c55e 100%);
 }
 .failed {
-  background: var(--color-accent);
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff4d4f 100%);
+}
+.badge::before {
+  content: '';
+  display: inline-block;
+  margin-right: 6px;
+}
+.scheduled.badge::before {
+  content: '\1F4C5'; /* Calendar emoji */
+}
+.posted.badge::before {
+  content: '\2B50'; /* Star emoji */
+}
+.failed.badge::before {
+  content: '\26A0'; /* Warning emoji */
+}
+@keyframes badge-pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  80% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .calendar-column {
