@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 5000;
+const bcrypt = require('bcryptjs');
 
 // Import database connection
 require('./db.js');
@@ -120,7 +121,8 @@ app.post('/auth/signup', async (req, res) => {
     if (!username || !email || !password) return res.status(400).json({ error: 'All fields required' });
     let user = await User.findOne({ $or: [{ username }, { email }] });
     if (user) return res.status(400).json({ error: 'User already exists' });
-    user = await User.create({ username, password, preferences: { niche: '', notifications: true, theme: 'light' } });
+    const hash = await bcrypt.hash(password, 10);
+    user = await User.create({ username, password: hash, preferences: { niche: '', notifications: true, theme: 'light' } });
     user.email = email; // Save email as a property (not in schema, but for demo)
     await user.save();
     res.json({ email });
@@ -135,7 +137,9 @@ app.post('/auth/login', async (req, res) => {
     if (!username || !password) return res.status(400).json({ error: 'All fields required' });
     // Allow login by username or email
     let user = await User.findOne({ $or: [{ username }, { email: username }] });
-    if (!user || user.password !== password) return res.status(400).json({ error: 'Invalid credentials' });
+    if (!user) return res.status(400).json({ error: 'Invalid credentials' });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ error: 'Invalid credentials' });
     res.json({ email: user.email || '' });
   } catch (err) {
     res.status(500).json({ error: 'Login failed' });
