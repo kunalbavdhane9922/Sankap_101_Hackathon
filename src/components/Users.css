@@ -1,36 +1,37 @@
+/* Users Table */
 .users-table-container {
   overflow-x: auto;
-  border-radius: 18px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  margin: 32px 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow);
+  margin: var(--space-5) 0;
 }
 
 .users-table {
   min-width: 600px;
   width: 100%;
   border-collapse: collapse;
-  font-size: 1rem;
+  font-size: var(--font-size-body);
   color: #333;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .users-table thead {
   background: #f3f4f6;
   color: #6b7280;
   text-transform: uppercase;
-  font-size: 0.95rem;
+  font-size: var(--font-size-caption);
   letter-spacing: 0.04em;
 }
 
 .users-table th, .users-table td {
-  padding: 16px 24px;
+  padding: var(--space-4) var(--space-5);
   text-align: left;
 }
 
 .users-table tbody tr {
-  transition: background 0.15s;
+  transition: background var(--transition);
 }
 
 .users-table tbody tr:hover {
@@ -54,14 +55,14 @@
   width: 24px;
   height: 24px;
   vertical-align: middle;
-  margin-right: 6px;
+  margin-right: var(--space-1);
 }
 
 .users-status {
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .users-status-dot {
@@ -70,7 +71,7 @@
 }
 
 .users-status-active {
-  color: #22c55e;
+  color: var(--color-secondary);
 }
 
 .users-status-inactive {
@@ -79,7 +80,7 @@
 
 @media (max-width: 700px) {
   .users-table th, .users-table td {
-    padding: 10px 8px;
+    padding: var(--space-2) var(--space-1);
     font-size: 0.95rem;
   }
   .users-table {
@@ -87,23 +88,40 @@
   }
 }
 
+/* Buttons */
 .add-account-btn {
-  background: #7d4cff;
+  background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
   font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 18px;
+  margin-bottom: var(--space-4);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--transition);
   box-shadow: 0 2px 8px rgba(125, 76, 255, 0.08);
 }
 .add-account-btn:hover {
-  background: #5e38b6;
+  background: var(--color-primary-dark);
 }
 
+.remove-account-btn {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-left: var(--space-2);
+  transition: background var(--transition);
+}
+.remove-account-btn:hover {
+  background: #d9363e;
+}
+
+/* Modal */
 .modal-backdrop {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -114,10 +132,10 @@
   z-index: 1000;
 }
 .modal {
-  background: #fff;
-  border-radius: 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
   box-shadow: 0 4px 32px rgba(0,0,0,0.13);
-  padding: 32px 28px 24px 28px;
+  padding: var(--space-5) var(--space-4) var(--space-4) var(--space-4);
   min-width: 320px;
   max-width: 90vw;
   text-align: center;
@@ -125,17 +143,17 @@
 .platform-list {
   list-style: none;
   padding: 0;
-  margin: 18px 0 18px 0;
+  margin: var(--space-4) 0 var(--space-4) 0;
 }
 .platform-option {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 0;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
   cursor: pointer;
   font-size: 1.08rem;
-  border-radius: 8px;
-  transition: background 0.15s;
+  border-radius: var(--radius-md);
+  transition: background var(--transition);
 }
 .platform-option:hover {
   background: #f3f4f6;
@@ -144,35 +162,23 @@
   background: #eee;
   color: #444;
   border: none;
-  border-radius: 6px;
-  padding: 7px 18px;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-4);
   font-size: 1rem;
-  margin-top: 10px;
+  margin-top: var(--space-2);
   cursor: pointer;
 }
+
+/* Feedback */
 .loading-spinner {
-  margin: 18px 0;
-  color: #7d4cff;
+  margin: var(--space-4) 0;
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 1.1rem;
 }
 .error-message {
-  margin: 18px 0;
-  color: #ff4d4f;
+  margin: var(--space-4) 0;
+  color: var(--color-accent);
   font-weight: 600;
   font-size: 1.05rem;
-}
-.remove-account-btn {
-  background: #ff4d4f;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 14px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  margin-left: 8px;
-  transition: background 0.15s;
-}
-.remove-account-btn:hover {
-  background: #d9363e;
 } 

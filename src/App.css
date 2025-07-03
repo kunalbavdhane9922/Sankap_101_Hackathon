@@ -1,54 +1,63 @@
+/* Layout */
 .app-layout {
   display: flex;
   min-height: 100vh;
-  background: #f6f7fb;
-  font-family: 'Inter', Arial, sans-serif;
+  background: var(--color-bg);
+  font-family: var(--font-main);
 }
 
 .main-content-area {
   flex: 1;
-  padding: 32px 24px;
+  padding: var(--space-5) var(--space-4);
   overflow-y: auto;
-  background: #f6f7fb;
+  background: var(--color-bg);
 }
 
+/* Sidebar */
 .sidebar {
   width: 250px;
-  background: #fff;
-  padding: 20px;
-  border-right: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  padding: var(--space-4);
+  border-right: 1px solid var(--color-border);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar nav {
-  margin-top: 30px;
+  margin-top: var(--space-5);
 }
 
 .sidebar-link {
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: var(--space-3);
   color: #555;
   text-decoration: none;
   font-weight: 500;
-  border-radius: 8px;
-  padding: 8px 12px;
-  transition: background 0.15s, color 0.15s;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  transition: background var(--transition), color var(--transition);
 }
 .sidebar-link.active, .sidebar-link:hover {
   background: #ede9fe;
-  color: #7d4cff;
+  color: var(--color-primary);
 }
 
+/* Card */
 .card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 24px;
-  margin-bottom: 24px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--color-shadow);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+.card:hover {
+  box-shadow: var(--color-shadow-lg);
+  border-color: #bdbdbd;
 }
 
+/* Responsive */
 @media (max-width: 900px) {
   .app-layout {
     flex-direction: column;
@@ -57,12 +66,12 @@
     width: 100%;
     min-height: unset;
     border-right: none;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--color-border);
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
   .main-content-area {
-    padding: 18px 4vw 24px 4vw;
+    padding: var(--space-3) 4vw var(--space-4) 4vw;
   }
 }

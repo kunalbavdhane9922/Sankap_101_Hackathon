@@ -1,6 +1,6 @@
 body {
-  background: #faf9f6;
-  font-family: 'Inter', Arial, sans-serif;
+  background: var(--color-bg);
+  font-family: var(--font-main);
   margin: 0;
   padding: 0;
   color: #222;
@@ -8,45 +8,45 @@ body {
 
 .container {
   max-width: 900px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  padding: 32px 24px 32px 24px;
+  margin: var(--space-5) auto;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--color-shadow-lg);
+  padding: var(--space-5) var(--space-4) var(--space-5) var(--space-4);
 }
 
 .title {
-  font-size: 2.2rem;
+  font-size: var(--font-size-h1);
   font-weight: 700;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-5);
 }
 
 .main-content {
   display: flex;
-  gap: 32px;
+  gap: var(--space-5);
 }
 
 .posts-column {
   flex: 1.2;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-4);
 }
 
 .post-card {
-  background: #faf9f6;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 20px 20px 16px 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--color-shadow);
+  padding: var(--space-4) var(--space-4) var(--space-3) var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-2);
 }
 
 .post-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   font-size: 1.1rem;
   font-weight: 600;
 }
@@ -55,8 +55,8 @@ body {
   width: 28px;
   height: 28px;
   object-fit: contain;
-  border-radius: 6px;
-  background: #fff;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
@@ -73,8 +73,8 @@ body {
 
 .post-image {
   width: 100%;
-  border-radius: 10px;
-  margin-top: 4px;
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-1);
   object-fit: cover;
   max-height: 90px;
 }
@@ -85,8 +85,8 @@ body {
 }
 
 .badge {
-  padding: 4px 16px;
-  border-radius: 8px;
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-md);
   font-size: 0.98rem;
   font-weight: 600;
   color: #fff;
@@ -99,7 +99,7 @@ body {
   background: #4ecb8f;
 }
 .failed {
-  background: #ff6b6b;
+  background: var(--color-accent);
 }
 
 .calendar-column {
@@ -109,10 +109,10 @@ body {
   justify-content: center;
 }
 .calendar {
-  background: #faf9f6;
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 24px 28px 28px 28px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--color-shadow);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4);
   min-width: 260px;
   max-width: 320px;
 }
@@ -120,9 +120,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.15rem;
+  font-size: var(--font-size-h3);
   font-weight: 600;
-  margin-bottom: 18px;
+  margin-bottom: var(--space-3);
 }
 .calendar-header .arrow {
   color: #bbb;
@@ -140,20 +140,20 @@ body {
   grid-template-columns: repeat(7, 1fr);
   font-size: 1rem;
   color: #bbb;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-1);
   text-align: center;
   font-weight: 500;
 }
 .calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: var(--space-1);
   font-size: 1.05rem;
   text-align: center;
 }
 .calendar-days span {
-  padding: 7px 0;
-  border-radius: 8px;
+  padding: var(--space-2) 0;
+  border-radius: var(--radius-md);
   display: inline-block;
   min-width: 32px;
   min-height: 32px;
@@ -170,16 +170,16 @@ body {
 /* Responsive Styles */
 @media (max-width: 900px) {
   .container {
-    padding: 18px 4vw 24px 4vw;
+    padding: var(--space-3) 4vw var(--space-4) 4vw;
   }
   .main-content {
-    gap: 18px;
+    gap: var(--space-3);
   }
 }
 @media (max-width: 768px) {
   .main-content {
     flex-direction: column;
-    gap: 32px;
+    gap: var(--space-5);
   }
   .calendar-column {
     justify-content: flex-start;
@@ -188,27 +188,27 @@ body {
 }
 @media (max-width: 500px) {
   .container {
-    padding: 8px 0 16px 0;
+    padding: var(--space-1) 0 var(--space-2) 0;
     border-radius: 0;
   }
   .title {
     font-size: 1.3rem;
-    margin-bottom: 18px;
+    margin-bottom: var(--space-3);
   }
   .calendar {
-    padding: 14px 4px 18px 4px;
+    padding: var(--space-2) var(--space-1) var(--space-3) var(--space-1);
     min-width: 0;
     max-width: 100vw;
   }
   .post-card {
-    padding: 12px 8px 10px 8px;
+    padding: var(--space-2) var(--space-1) var(--space-1) var(--space-1);
   }
   .post-header {
     font-size: 1rem;
   }
   .badge {
     font-size: 0.9rem;
-    padding: 3px 10px;
+    padding: var(--space-1) var(--space-2);
   }
   .calendar-days span {
     min-width: 24px;

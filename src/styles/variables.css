@@ -1,0 +1,41 @@
+/* Design System Variables */
+:root {
+  --color-bg: #f6f7fb;
+  --color-surface: #fff;
+  --color-primary: #7d4cff;
+  --color-primary-dark: #5e38b6;
+  --color-secondary: #22c55e;
+  --color-accent: #ff4d4f;
+  --color-border: #e5e7eb;
+  --color-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --color-shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 6px;
+  --font-main: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+  --font-size-h1: 2.2rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h3: 1.2rem;
+  --font-size-body: 1rem;
+  --font-size-caption: 0.95rem;
+  --line-height: 1.6;
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+}
+
+[data-theme="dark"] {
+  --color-bg: #181a20;
+  --color-surface: #23262f;
+  --color-primary: #a18aff;
+  --color-primary-dark: #7d4cff;
+  --color-secondary: #22c55e;
+  --color-accent: #ff6b81;
+  --color-border: #353945;
+  --color-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  --color-shadow-lg: 0 4px 16px rgba(0,0,0,0.22);
+  --color-text: #f4f4f4;
+} 
