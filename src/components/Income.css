@@ -1,0 +1,279 @@
+/* Income Component Styles */
+.income-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.income-header {
+  margin-bottom: 32px;
+}
+
+.income-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.income-subtitle {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.income-total {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  color: white;
+  text-align: center;
+}
+
+.income-total-label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.income-total-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.income-total-period {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.income-chart-section {
+  margin-bottom: 32px;
+}
+
+.income-chart-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.income-chart-container {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.income-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 120px;
+  margin-bottom: 16px;
+}
+
+.income-chart-bar {
+  flex: 1;
+  background: linear-gradient(180deg, #7d4cff, #6366f1);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  transition: all 0.3s ease;
+  min-width: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.income-chart-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(125, 76, 255, 0.3);
+}
+
+.income-chart-value {
+  position: absolute;
+  bottom: -25px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #666;
+  transform: rotate(-45deg);
+  transform-origin: top left;
+}
+
+.income-chart-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 8px;
+}
+
+.income-trend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.income-trend.up {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.income-trend.down {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.income-trend-icon {
+  font-size: 1.2rem;
+}
+
+.income-suggestions {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.income-suggestions-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.income-suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.income-suggestion-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-left: 4px solid #7d4cff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.income-suggestion-item:hover {
+  transform: translateX(4px);
+}
+
+.income-suggestion-text {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.income-suggestion-tools {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.income-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.income-loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #7d4cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 12px;
+}
+
+.income-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  color: #dc2626;
+  font-size: 1rem;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .income-container {
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .income-title {
+    font-size: 1.5rem;
+  }
+  
+  .income-total-amount {
+    font-size: 2rem;
+  }
+  
+  .income-chart-bars {
+    height: 100px;
+    gap: 8px;
+  }
+  
+  .income-chart-bar {
+    min-width: 30px;
+  }
+  
+  .income-chart-value {
+    font-size: 0.7rem;
+  }
+  
+  .income-suggestions {
+    padding: 16px;
+  }
+  
+  .income-suggestion-tools {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .income-container {
+    padding: 16px;
+  }
+  
+  .income-total {
+    padding: 16px;
+  }
+  
+  .income-total-amount {
+    font-size: 1.8rem;
+  }
+  
+  .income-chart-bars {
+    height: 80px;
+    gap: 6px;
+  }
+  
+  .income-chart-bar {
+    min-width: 25px;
+  }
+} 
