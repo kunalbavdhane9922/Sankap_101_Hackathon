@@ -1,0 +1,131 @@
+[
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "hello",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "bye",
+    "platform": "instagram",
+    "time": "2025-06-26T23:55",
+    "sent": true
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "kig",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "jklhjbou",
+    "platform": "instagram",
+    "time": "2025-06-27T11:55",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "jklhjbou",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "dsdsagsad",
+    "platform": "instagram",
+    "time": "2025-06-27T11:55",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "dsdsagsad",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "d",
+    "platform": "instagram",
+    "time": "2025-06-27T12:00",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "d",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "s",
+    "platform": "instagram",
+    "time": "2025-06-27T12:08",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "s",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "d",
+    "platform": "instagram",
+    "time": "2025-06-27T12:17",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "d",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "gghg",
+    "platform": "instagram",
+    "time": "2025-06-27T12:23",
+    "sent": true,
+    "type": "confirmation",
+    "originalTime": "2025-06-27"
+  },
+  {
+    "email": "bavdhanekunal90@gmail.com",
+    "content": "gghg",
+    "platform": "instagram",
+    "time": "2025-06-27",
+    "sent": true,
+    "type": "reminder",
+    "originalTime": "2025-06-27"
+  }
+]
