@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import API_BASE_URL from "../config";
 
 export default function useAnalytics(accounts = []) {
   const [data, setData] = useState(null);
@@ -8,7 +9,7 @@ export default function useAnalytics(accounts = []) {
   useEffect(() => {
     setLoading(true);
     setError('');
-    fetch('http://localhost:5000/analytics', {
+    fetch(`${API_BASE_URL}/analytics`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accounts })

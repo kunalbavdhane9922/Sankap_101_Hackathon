@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SentimentAnalyzer from './SentimentAnalyzer';
 import '../pages/Home.css';
+import API_BASE_URL from "../config";
 
 export default function Settings() {
   const [data, setData] = useState(null);
@@ -12,7 +13,7 @@ export default function Settings() {
   useEffect(() => {
     setLoading(true);
     setError('');
-    fetch('http://localhost:5000/settings')
+    fetch(`${API_BASE_URL}/settings`)
       .then(res => res.json())
       .then(d => { setData(d); setPrefs(d.preferences); })
       .catch(e => setError(e.message))
@@ -27,7 +28,7 @@ export default function Settings() {
     setSaving(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/settings', {
+      const res = await fetch(`${API_BASE_URL}/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ preferences: prefs })

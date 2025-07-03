@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Users.css';
+import API_BASE_URL from "../config";
 
 const PLATFORMS = [
   { name: 'Instagram', icon: 'https://img.icons8.com/color/24/instagram-new.png', key: 'instagram' },
@@ -39,7 +40,7 @@ function AccountItem({ account, onRemove }) {
 
 const fetchAccountDetails = async (platform) => {
   // Use the same mock endpoints for demo, or replace with real fetch if needed
-  const endpoint = `http://localhost:5000/${platform}`;
+  const endpoint = `${API_BASE_URL}/${platform}`;
   const res = await fetch(endpoint);
   if (!res.ok) throw new Error('Failed to fetch account details');
   return res.json();
@@ -55,7 +56,7 @@ const Users = () => {
   // Fetch accounts from backend
   const loadAccounts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/accounts');
+      const res = await fetch(`${API_BASE_URL}/api/accounts`);
       const data = await res.json();
       setAccounts(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -75,7 +76,7 @@ const Users = () => {
     try {
       const details = await fetchAccountDetails(platformKey);
       // POST to backend
-      const res = await fetch('http://localhost:5000/api/accounts', {
+      const res = await fetch(`${API_BASE_URL}/api/accounts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details)
@@ -93,7 +94,7 @@ const Users = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`http://localhost:5000/api/accounts/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/accounts/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to remove account');
       await loadAccounts();
     } catch (err) {

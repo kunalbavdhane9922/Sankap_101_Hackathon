@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE_URL from "../config";
 
 const getNiche = () => localStorage.getItem('niche') || 'default';
 const setNiche = (niche) => localStorage.setItem('niche', niche);
@@ -13,7 +14,7 @@ export default function HashtagSuggester({ content, platform, audience }) {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/src/backend/seoEngine.js', {
+      const res = await fetch(`${API_BASE_URL}/seoEngine`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content, platform, audience, niche })

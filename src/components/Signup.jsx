@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API_BASE_URL from "../config";
 
 export default function Signup({ onSignup }) {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -14,7 +15,7 @@ export default function Signup({ onSignup }) {
     setError("");
     setSuccess(false);
     try {
-      const res = await fetch("http://localhost:5000/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)

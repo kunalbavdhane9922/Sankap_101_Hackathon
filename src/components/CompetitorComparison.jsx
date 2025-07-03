@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import API_BASE_URL from "../config";
 
 // Fetch from backend
 function fetchCompetitorData(niche) {
-  return fetch(`http://localhost:5000/compareCompetitors?niche=${encodeURIComponent(niche)}`)
+  return fetch(`${API_BASE_URL}/compareCompetitors?niche=${encodeURIComponent(niche)}`)
     .then(res => res.json());
 }
 

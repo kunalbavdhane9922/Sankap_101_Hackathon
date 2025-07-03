@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SentimentAnalyzer from './SentimentAnalyzer';
 import BestTimeRecommender from './BestTimeRecommender';
+import API_BASE_URL from "../config";
 import './Income.css';
 
 export default function Income() {
@@ -11,7 +12,7 @@ export default function Income() {
   useEffect(() => {
     setLoading(true);
     setError('');
-    fetch('http://localhost:5000/income')
+    fetch(`${API_BASE_URL}/income`)
       .then(res => res.json())
       .then(setData)
       .catch(e => setError(e.message))

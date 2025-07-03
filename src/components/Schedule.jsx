@@ -8,6 +8,7 @@ import CaptionGenerator from "./CaptionGenerator";
 import PostPreview from "./PostPreview";
 import ReplySuggestions from "./ReplySuggestions";
 import React, { useState, useEffect } from "react";
+import API_BASE_URL from "../config";
 
 const PLATFORMS = [
   { label: "Instagram", value: "instagram" },
@@ -93,7 +94,7 @@ export default function Schedule() {
     setEmailFeedback("");
     if (userEmail) {
       try {
-        const res = await fetch("http://localhost:5000/notifyEmail", {
+        const res = await fetch(`${API_BASE_URL}/notifyEmail`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

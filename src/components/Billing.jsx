@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SentimentAnalyzer from './SentimentAnalyzer';
 import '../pages/Home.css';
+import API_BASE_URL from "../config";
 
 export default function Billing() {
   const [data, setData] = useState(null);
@@ -10,7 +11,7 @@ export default function Billing() {
   useEffect(() => {
     setLoading(true);
     setError('');
-    fetch('http://localhost:5000/billing')
+    fetch(`${API_BASE_URL}/billing`)
       .then(res => res.json())
       .then(setData)
       .catch(e => setError(e.message))

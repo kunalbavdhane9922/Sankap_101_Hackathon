@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE_URL from "../config";
 
 export default function TrendingRecommender({ platform, viewCount, avgViewCount }) {
   const [topics, setTopics] = useState(null);
@@ -11,7 +12,7 @@ export default function TrendingRecommender({ platform, viewCount, avgViewCount 
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/src/backend/trendingTopics.js', {
+      const res = await fetch(`${API_BASE_URL}/trendingTopics`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ platform })

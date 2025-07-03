@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import CompetitorComparison from "../components/CompetitorComparison";
+import API_BASE_URL from "../config";
 
 const platformColors = {
   Instagram: '#E1306C',
@@ -63,10 +64,10 @@ const Home = () => {
     setLoading(true);
     setError('');
     try {
-      const accRes = await fetch('http://localhost:5000/api/accounts');
+      const accRes = await fetch(`${API_BASE_URL}/api/accounts`);
       const accData = await accRes.json();
       setAccounts(Array.isArray(accData) ? accData : []);
-      const anRes = await fetch('http://localhost:5000/api/analytics');
+      const anRes = await fetch(`${API_BASE_URL}/api/analytics`);
       const anData = await anRes.json();
       // Map analytics by account id
       const analyticsMap = {};
