@@ -8,6 +8,8 @@ const connectDB = async () => {
     await mongoose.connect(MONGO_URI, {
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     console.log('✅ Connected to MongoDB');
   } catch (error) {

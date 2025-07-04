@@ -1,3 +1,17 @@
+# MongoDB Setup Guide
+
+## Fixing TLS/SSL Errors on Render
+If you see errors like `tlsv1 alert internal error` or `ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR`, you need to force Node.js to use TLS 1.2 or higher.
+
+**How to fix:**
+1. Go to your Render service dashboard.
+2. Add an environment variable:
+   - Key: `NODE_OPTIONS`
+   - Value: `--tls-min-v1.2`
+3. Save and redeploy your service.
+
+---
+
 # MongoDB Connection Setup Guide
 
 ## Current Issue
