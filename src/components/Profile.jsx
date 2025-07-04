@@ -25,6 +25,16 @@ export default function Profile() {
     }
   }, [userEmail]);
 
+  // Update localStorage with username and profilePhoto after profile fetch
+  useEffect(() => {
+    if (profile.username) {
+      localStorage.setItem("user.username", profile.username);
+    }
+    if (profile.profilePhoto) {
+      localStorage.setItem("user.profilePhoto", profile.profilePhoto);
+    }
+  }, [profile.username, profile.profilePhoto]);
+
   const loadProfile = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/profile?email=${userEmail}`);
@@ -61,6 +71,17 @@ export default function Profile() {
       if (res.ok) {
         setSuccess("Profile updated successfully!");
         setIsEditing(false);
+        // Update localStorage with new fullName and username
+        if (profile.username) {
+          localStorage.setItem("user.username", profile.username);
+        }
+        if (profile.fullName) {
+          localStorage.setItem("user.fullName", profile.fullName);
+        }
+        // Optionally update profilePhoto if changed
+        if (profile.profilePhoto) {
+          localStorage.setItem("user.profilePhoto", profile.profilePhoto);
+        }
       } else {
         const data = await res.json();
         setError(data.error || "Failed to update profile");
@@ -95,8 +116,13 @@ export default function Profile() {
           const data = await res.json();
           setProfile(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
           setSuccess("Profile photo updated!");
+          // Update localStorage with new profile photo
+          if (data.profilePhoto) {
+            localStorage.setItem("user.profilePhoto", data.profilePhoto);
+          }
         } else {
-          setError("Failed to update profile photo");
+          const data = await res.json().catch(() => ({}));
+          setError(data.error || "Failed to update profile photo");
         }
       } catch (err) {
         setError("Network error");
