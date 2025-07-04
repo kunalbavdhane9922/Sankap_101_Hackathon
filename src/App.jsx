@@ -13,7 +13,9 @@ import Signup from "./components/Signup";
 
 function RequireAuth({ children }) {
   const location = useLocation();
-  const isLoggedIn = !!localStorage.getItem("user.email");
+  const userEmail = localStorage.getItem("user.email");
+  const isLoggedIn = userEmail && userEmail.trim() !== "";
+  
   if (!isLoggedIn) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
@@ -21,6 +23,15 @@ function RequireAuth({ children }) {
 }
 
 export default function App() {
+  // Add a way to force logout for testing
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === 'true') {
+      localStorage.removeItem('user.email');
+      window.location.href = '/login';
+    }
+  }, []);
+
   return (
     <Router>
       <Layout>

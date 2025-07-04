@@ -48,6 +48,7 @@ app.get('/test-user', async (req, res) => {
       res.json({ 
         exists: true, 
         username: user.username, 
+        email: user.email,
         hasPassword: !!user.password,
         password: user.password // This will show the actual password for debugging
       });
@@ -56,6 +57,33 @@ app.get('/test-user', async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// Test login endpoint for debugging
+app.post('/test-login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    console.log('Test login attempt:', { username, password: password ? '***' : 'missing' });
+    
+    let user = await User.findOne({ $or: [{ username }, { email: username }] });
+    console.log('User found:', user ? { username: user.username, email: user.email } : 'not found');
+    
+    if (!user) {
+      return res.json({ success: false, error: 'User not found' });
+    }
+    
+    const match = await bcrypt.compare(password, user.password);
+    console.log('Password match:', match);
+    
+    if (!match) {
+      return res.json({ success: false, error: 'Password mismatch' });
+    }
+    
+    res.json({ success: true, email: user.email });
+  } catch (err) {
+    console.error('Test login error:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
