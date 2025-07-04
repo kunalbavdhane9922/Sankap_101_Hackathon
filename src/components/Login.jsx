@@ -23,15 +23,22 @@ export default function Login({ onLogin }) {
       });
       
       console.log('Response status:', res.status);
+      console.log('Response headers:', Object.fromEntries(res.headers.entries()));
+      
       const data = await res.json();
       console.log('Response data:', data);
+      console.log('Response ok:', res.ok);
       
       if (res.ok) {
         // If email is empty, use username as fallback
         const userEmail = data.email || form.username;
+        console.log('Setting user email to:', userEmail);
         localStorage.setItem("user.email", userEmail);
         if (onLogin) onLogin(data);
+        // Force redirect to home page
+        window.location.href = '/';
       } else {
+        console.log('Login failed, error:', data.error);
         setError(data.error || "Login failed");
       }
     } catch (err) {
