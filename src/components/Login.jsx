@@ -13,12 +13,19 @@ export default function Login({ onLogin }) {
     setLoading(true);
     setError("");
     try {
+      console.log('Attempting login to:', `${API_BASE_URL}/auth/login`);
+      console.log('Login data:', { username: form.username, password: form.password ? '***' : 'missing' });
+      
       const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form)
       });
+      
+      console.log('Response status:', res.status);
       const data = await res.json();
+      console.log('Response data:', data);
+      
       if (res.ok && data.email) {
         localStorage.setItem("user.email", data.email);
         if (onLogin) onLogin(data);
@@ -26,6 +33,7 @@ export default function Login({ onLogin }) {
         setError(data.error || "Login failed");
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError("Network error");
     } finally {
       setLoading(false);

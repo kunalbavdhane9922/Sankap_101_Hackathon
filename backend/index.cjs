@@ -39,6 +39,25 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Test endpoint to check if default user exists
+app.get('/test-user', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: 'demo' });
+    if (user) {
+      res.json({ 
+        exists: true, 
+        username: user.username, 
+        hasPassword: !!user.password,
+        password: user.password // This will show the actual password for debugging
+      });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // --- MongoDB-powered endpoints ---
 
 // Add a new account for a user (default user if not provided)
@@ -131,14 +150,21 @@ app.post('/auth/signup', async (req, res) => {
 
 app.post('/auth/login', async (req, res) => {
   try {
+    console.log('Login attempt:', { username: req.body.username, password: req.body.password ? '***' : 'missing' });
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'All fields required' });
     // Allow login by username or email
     let user = await User.findOne({ $or: [{ username }, { email: username }] });
+    console.log('User found:', user ? { username: user.username, hasPassword: !!user.password } : 'not found');
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
-    if (password !== user.password) return res.status(400).json({ error: 'Invalid credentials' });
+    if (password !== user.password) {
+      console.log('Password mismatch:', { provided: password, stored: user.password });
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
+    console.log('Login successful for:', user.username);
     res.json({ email: user.email || '' });
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });
   }
 });
