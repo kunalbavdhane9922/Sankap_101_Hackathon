@@ -171,13 +171,33 @@ body {
   justify-content: center;
 }
 .calendar {
-  background: var(--color-bg);
+  position: relative;
   border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: var(--color-bg);
   box-shadow: var(--color-shadow);
-  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4);
-  min-width: 260px;
-  max-width: 320px;
+  z-index: 1;
 }
+
+/* Gradient border using ::before */
+.calendar::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  padding: 2px;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
 .calendar-header {
   display: flex;
   align-items: center;
