@@ -58,18 +58,31 @@ const Home = () => {
   const [analytics, setAnalytics] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Navbar button handlers
   const handleInboxClick = () => {
     alert('Inbox feature coming soon!');
   };
   const handleBellClick = () => {
-    alert('Notifications feature coming soon!');
+    setShowNotifications((prev) => !prev);
   };
   const handleUserClick = () => {
     // If using React Router, use navigate('/profile')
     window.location.href = '/profile';
   };
+
+  // Close notification panel when clicking outside
+  React.useEffect(() => {
+    if (!showNotifications) return;
+    const handleClick = (e) => {
+      if (!e.target.closest('.notification-panel') && !e.target.closest('.dashboard-icon-btn-bell')) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showNotifications]);
 
   // Get user data from localStorage
   const userEmail = localStorage.getItem("user.email");
@@ -138,8 +151,17 @@ const Home = () => {
         <div className="dashboard-controls">
           <select className="dashboard-select"><option>Choose</option></select>
           <button className="dashboard-icon-btn" onClick={handleInboxClick}><span role="img" aria-label="inbox">📥</span></button>
-          <button className="dashboard-icon-btn" onClick={handleBellClick}><span role="img" aria-label="bell">🔔</span></button>
+          <button className="dashboard-icon-btn dashboard-icon-btn-bell" onClick={handleBellClick}><span role="img" aria-label="bell">🔔</span></button>
           <button className="dashboard-icon-btn" onClick={handleUserClick}><span role="img" aria-label="user">👤</span></button>
+          {showNotifications && (
+            <div className="notification-panel" style={{ position: 'absolute', top: 70, right: 40, width: 320, background: '#fff', borderRadius: 12, boxShadow: '0 4px 24px rgba(0,0,0,0.13)', zIndex: 100, padding: 18 }}>
+              <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 10, color: '#7d4cff' }}>Notifications</div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <li style={{ padding: '10px 0', borderBottom: '1px solid #eee', color: '#444' }}>No new notifications</li>
+                {/* Add more notifications here */}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
       <div className="dashboard-content-row">
