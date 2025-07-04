@@ -112,6 +112,23 @@
   margin-top: var(--space-1);
 }
 
+.income-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+.income-chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  color: #444;
+  margin-right: 12px;
+  margin-bottom: 4px;
+}
+
 .income-trend {
   display: flex;
   align-items: center;

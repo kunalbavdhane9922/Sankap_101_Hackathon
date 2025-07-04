@@ -46,6 +46,21 @@ export default function Income() {
   // Calculate max value for chart scaling
   const maxValue = Math.max(...data.monthly);
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // Assign a unique color to each month
+  const monthColors = [
+    '#7d4cff', // Jan
+    '#22c55e', // Feb
+    '#ff6f4c', // Mar
+    '#00c287', // Apr
+    '#fbbf24', // May
+    '#6366f1', // Jun
+    '#ef4444', // Jul
+    '#3b82f6', // Aug
+    '#a21caf', // Sep
+    '#f472b6', // Oct
+    '#10b981', // Nov
+    '#f59e42', // Dec
+  ];
 
   return (
     <div className="income-container">
@@ -68,7 +83,7 @@ export default function Income() {
               <div
                 key={index}
                 className="income-chart-bar"
-                style={{ height: `${(value / maxValue) * 100}%` }}
+                style={{ height: `${(value / maxValue) * 100}%`, background: monthColors[index % monthColors.length] }}
               >
                 <span className="income-chart-value">${value}</span>
               </div>
@@ -79,6 +94,16 @@ export default function Income() {
               <span key={index}>{month}</span>
             ))}
           </div>
+        </div>
+
+        {/* Legend for color mapping */}
+        <div className="income-chart-legend">
+          {monthNames.slice(0, data.monthly.length).map((month, idx) => (
+            <span key={month} className="income-chart-legend-item" style={{ display: 'inline-flex', alignItems: 'center', marginRight: 16, fontSize: 13 }}>
+              <span style={{ display: 'inline-block', width: 16, height: 16, borderRadius: 4, background: monthColors[idx % monthColors.length], marginRight: 6, border: '1px solid #ddd' }}></span>
+              {month}
+            </span>
+          ))}
         </div>
 
         <div className={`income-trend ${data.trend}`}>
