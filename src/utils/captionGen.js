@@ -22,4 +22,12 @@ export function generateCaption({ filename = '', keywords = [] }) {
     return `About "${base}": ${templates[Math.floor(Math.random()*templates.length)]}`;
   }
   return templates[Math.floor(Math.random()*templates.length)];
+}
+
+// Simulate an async AI API call (replace with real API integration if needed)
+export async function generateCaptionAI({ filename = '', keywords = [] }) {
+  // Simulate network delay
+  await new Promise(res => setTimeout(res, 700));
+  // Use the same logic for now, but you can replace this with a fetch to an AI API
+  return generateCaption({ filename, keywords }) + ' (AI)';
 } 

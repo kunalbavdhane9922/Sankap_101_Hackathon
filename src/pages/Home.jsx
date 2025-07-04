@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import CompetitorComparison from "../components/CompetitorComparison";
+import CaptionGenerator from "../components/CaptionGenerator";
 import API_BASE_URL from "../config";
 
 const platformColors = {
@@ -161,6 +162,8 @@ const Home = () => {
               <AnalyticsCard key={account._id || account.platform + idx} account={account} analytics={analytics[account._id]} />
             ))}
           </div>
+          {/* AI Caption Generator */}
+          <CaptionGenerator />
           {/* Competitor Comparison Feature */}
           <CompetitorComparison niche="fitness" />
         </div>
