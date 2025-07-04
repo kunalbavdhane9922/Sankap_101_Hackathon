@@ -62,7 +62,7 @@ const Home = () => {
   // Get user data from localStorage
   const userEmail = localStorage.getItem("user.email");
   const userFullName = localStorage.getItem("user.fullName") || localStorage.getItem("user.username") || "User";
-  const userProfilePhoto = localStorage.getItem("user.profilePhoto") || "https://i.pravatar.cc/48";
+  const userProfilePhoto = localStorage.getItem("user.profilePhoto") || "";
 
   // Fetch accounts and analytics from backend
   const loadData = async () => {
@@ -113,7 +113,13 @@ const Home = () => {
       {/* Top Bar */}
       <div className="dashboard-topbar">
         <div className="dashboard-greeting">
-          <img src={userProfilePhoto} alt="avatar" className="dashboard-avatar" />
+          {userProfilePhoto ? (
+            <img src={userProfilePhoto} alt="avatar" className="dashboard-avatar" />
+          ) : (
+            <div className="dashboard-avatar-placeholder">
+              {userFullName.charAt(0).toUpperCase()}
+            </div>
+          )}
           <span className="dashboard-greeting-text">Good Evening {userFullName}!</span>
         </div>
         <div className="dashboard-controls">

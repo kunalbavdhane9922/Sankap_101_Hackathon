@@ -134,10 +134,16 @@ export default function Profile() {
       <div className="profile-content">
         <div className="profile-photo-section">
           <div className="profile-photo">
-            <img 
-              src={profile.profilePhoto || "https://i.pravatar.cc/150"} 
-              alt="Profile" 
-            />
+            {profile.profilePhoto ? (
+              <img 
+                src={profile.profilePhoto} 
+                alt="Profile" 
+              />
+            ) : (
+              <div className="profile-photo-placeholder">
+                {profile.fullName ? profile.fullName.charAt(0).toUpperCase() : profile.username ? profile.username.charAt(0).toUpperCase() : 'U'}
+              </div>
+            )}
             {isEditing && (
               <div className="photo-upload">
                 <input

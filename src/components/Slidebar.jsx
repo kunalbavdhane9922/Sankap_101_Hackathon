@@ -4,7 +4,7 @@ function Slidebar(){
     const navigate = useNavigate();
     const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user.email') : null;
     const userFullName = typeof window !== 'undefined' ? localStorage.getItem('user.fullName') || localStorage.getItem('user.username') : null;
-    const userProfilePhoto = typeof window !== 'undefined' ? localStorage.getItem('user.profilePhoto') : null;
+    const userProfilePhoto = typeof window !== 'undefined' ? localStorage.getItem('user.profilePhoto') : "";
     const handleLogout = () => {
       localStorage.removeItem('user.email');
       window.location.reload();
@@ -33,11 +33,28 @@ function Slidebar(){
           {userEmail ? (
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 8 }}>
-                <img 
-                  src={userProfilePhoto || "https://i.pravatar.cc/32"} 
-                  alt="Profile" 
-                  style={{ width: 24, height: 24, borderRadius: '50%' }}
-                />
+                {userProfilePhoto ? (
+                  <img 
+                    src={userProfilePhoto} 
+                    alt="Profile" 
+                    style={{ width: 24, height: 24, borderRadius: '50%' }}
+                  />
+                ) : (
+                  <div style={{ 
+                    width: 24, 
+                    height: 24, 
+                    borderRadius: '50%', 
+                    background: '#7d4cff', 
+                    color: 'white', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    fontSize: '12px', 
+                    fontWeight: 'bold' 
+                  }}>
+                    {userFullName ? userFullName.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                )}
                 <div>
                   <div style={{ fontWeight: 600, color: '#333' }}>{userFullName}</div>
                   <div style={{ fontSize: 12 }}>{userEmail}</div>
