@@ -98,6 +98,22 @@ body {
   letter-spacing: 0.03em;
   text-shadow: 0 1px 2px #0002;
   animation: badge-pop 0.5s cubic-bezier(.4,2,.6,1);
+  .scheduled.badge::before {
+  content: '\1F4C5'; /* Calendar emoji */
+}
+.posted.badge::before {
+  content: '\2B50'; /* Star emoji */
+}
+.failed.badge::before {
+  content: '\26A0'; /* Warning emoji */
+}
+.detected-event.badge {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+.detected-event.badge::before {
+  content: '\1F389'; /* 🎉 Party Popper Emoji */
+}
+
 }
 .scheduled {
   background: linear-gradient(90deg, #a18aff 0%, #ffd700 100%);

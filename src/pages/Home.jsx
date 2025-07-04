@@ -58,7 +58,19 @@ const Home = () => {
   const [analytics, setAnalytics] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  
+
+  // Navbar button handlers
+  const handleInboxClick = () => {
+    alert('Inbox feature coming soon!');
+  };
+  const handleBellClick = () => {
+    alert('Notifications feature coming soon!');
+  };
+  const handleUserClick = () => {
+    // If using React Router, use navigate('/profile')
+    window.location.href = '/profile';
+  };
+
   // Get user data from localStorage
   const userEmail = localStorage.getItem("user.email");
   const userFullName = localStorage.getItem("user.fullName") || localStorage.getItem("user.username") || "User";
@@ -125,9 +137,9 @@ const Home = () => {
         </div>
         <div className="dashboard-controls">
           <select className="dashboard-select"><option>Choose</option></select>
-          <button className="dashboard-icon-btn"><span role="img" aria-label="inbox">📥</span></button>
-          <button className="dashboard-icon-btn"><span role="img" aria-label="bell">🔔</span></button>
-          <button className="dashboard-icon-btn"><span role="img" aria-label="user">👤</span></button>
+          <button className="dashboard-icon-btn" onClick={handleInboxClick}><span role="img" aria-label="inbox">📥</span></button>
+          <button className="dashboard-icon-btn" onClick={handleBellClick}><span role="img" aria-label="bell">🔔</span></button>
+          <button className="dashboard-icon-btn" onClick={handleUserClick}><span role="img" aria-label="user">👤</span></button>
         </div>
       </div>
       <div className="dashboard-content-row">
