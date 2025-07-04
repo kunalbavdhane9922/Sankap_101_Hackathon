@@ -34,6 +34,9 @@ export default function Login({ onLogin }) {
         const userEmail = data.email || form.username;
         console.log('Setting user email to:', userEmail);
         localStorage.setItem("user.email", userEmail);
+        localStorage.setItem("user.username", data.username || form.username);
+        localStorage.setItem("user.fullName", data.fullName || data.username || form.username);
+        localStorage.setItem("user.profilePhoto", data.profilePhoto || "");
         if (onLogin) onLogin(data);
         // Force redirect to home page
         window.location.href = '/';

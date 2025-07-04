@@ -3,6 +3,8 @@ import React from "react";
 function Slidebar(){
     const navigate = useNavigate();
     const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user.email') : null;
+    const userFullName = typeof window !== 'undefined' ? localStorage.getItem('user.fullName') || localStorage.getItem('user.username') : null;
+    const userProfilePhoto = typeof window !== 'undefined' ? localStorage.getItem('user.profilePhoto') : null;
     const handleLogout = () => {
       localStorage.removeItem('user.email');
       window.location.reload();
@@ -17,6 +19,7 @@ function Slidebar(){
           <NavLink to="/income" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Income</NavLink>
           <NavLink to="/billing" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Billing</NavLink>
           <NavLink to="/settings" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Settings</NavLink>
+          <NavLink to="/profile" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Profile</NavLink>
         </nav>
         <div style={{ marginTop: '30px' }}>
           <h4 style={{ color: '#555', marginBottom: '10px' }}>Scheduled Events</h4>
@@ -29,7 +32,17 @@ function Slidebar(){
         <div style={{ marginTop: 'auto', fontSize: '14px', color: '#888' }}>
           {userEmail ? (
             <>
-              <div style={{ marginBottom: 8 }}>Logged in as <b>{userEmail}</b></div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 8 }}>
+                <img 
+                  src={userProfilePhoto || "https://i.pravatar.cc/32"} 
+                  alt="Profile" 
+                  style={{ width: 24, height: 24, borderRadius: '50%' }}
+                />
+                <div>
+                  <div style={{ fontWeight: 600, color: '#333' }}>{userFullName}</div>
+                  <div style={{ fontSize: 12 }}>{userEmail}</div>
+                </div>
+              </div>
               <button onClick={handleLogout} style={{ padding: '6px 18px', borderRadius: 8, background: '#eee', color: '#a00', border: 'none', fontWeight: 600, cursor: 'pointer' }}>Logout</button>
             </>
           ) : (

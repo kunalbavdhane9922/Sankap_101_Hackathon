@@ -213,10 +213,85 @@ app.post('/auth/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
     console.log('Login successful for:', user.username);
-    res.json({ email: user.email || '' });
+    res.json({ 
+      email: user.email || '', 
+      username: user.username,
+      fullName: user.fullName || user.username,
+      profilePhoto: user.profilePhoto || ''
+    });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Profile management endpoints
+app.get('/api/profile', async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ error: 'Email required' });
+    
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    res.json({
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName || user.username,
+      mobileNumber: user.mobileNumber || '',
+      profilePhoto: user.profilePhoto || '',
+      bio: user.bio || '',
+      createdAt: user.createdAt
+    });
+  } catch (err) {
+    console.error('Get profile error:', err);
+    res.status(500).json({ error: 'Failed to get profile' });
+  }
+});
+
+app.put('/api/profile', async (req, res) => {
+  try {
+    const { email, fullName, mobileNumber, bio } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email required' });
+    
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    user.fullName = fullName || user.fullName;
+    user.mobileNumber = mobileNumber || user.mobileNumber;
+    user.bio = bio || user.bio;
+    
+    await user.save();
+    
+    res.json({
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      mobileNumber: user.mobileNumber,
+      profilePhoto: user.profilePhoto,
+      bio: user.bio
+    });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
+app.post('/api/profile/photo', async (req, res) => {
+  try {
+    const { email, profilePhoto } = req.body;
+    if (!email || !profilePhoto) return res.status(400).json({ error: 'Email and profile photo required' });
+    
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    user.profilePhoto = profilePhoto;
+    await user.save();
+    
+    res.json({ profilePhoto: user.profilePhoto });
+  } catch (err) {
+    console.error('Update profile photo error:', err);
+    res.status(500).json({ error: 'Failed to update profile photo' });
   }
 });
 

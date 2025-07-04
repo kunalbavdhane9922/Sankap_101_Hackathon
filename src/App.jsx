@@ -7,6 +7,7 @@ import Users from "./components/Users"
 import Income from "./components/Income";
 import Billing from "./components/Billing";
 import Settings from "./components/Settings";
+import Profile from "./components/Profile";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/income" element={<RequireAuth><Income /></RequireAuth>} />
           <Route path="/billing" element={<RequireAuth><Billing /></RequireAuth>} />
           <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+          <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
           {/* <Route path="/income" element={<DummyPage title="Income" />} /> */}
           {/* <Route path="/billing" element={<DummyPage title="Billing" />} /> */}
           {/* <Route path="/settings" element={<DummyPage title="Settings" />} />  */}

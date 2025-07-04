@@ -58,6 +58,11 @@ const Home = () => {
   const [analytics, setAnalytics] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Get user data from localStorage
+  const userEmail = localStorage.getItem("user.email");
+  const userFullName = localStorage.getItem("user.fullName") || localStorage.getItem("user.username") || "User";
+  const userProfilePhoto = localStorage.getItem("user.profilePhoto") || "https://i.pravatar.cc/48";
 
   // Fetch accounts and analytics from backend
   const loadData = async () => {
@@ -108,8 +113,8 @@ const Home = () => {
       {/* Top Bar */}
       <div className="dashboard-topbar">
         <div className="dashboard-greeting">
-          <img src="https://i.pravatar.cc/48" alt="avatar" className="dashboard-avatar" />
-          <span className="dashboard-greeting-text">Good Evening Shakir!</span>
+          <img src={userProfilePhoto} alt="avatar" className="dashboard-avatar" />
+          <span className="dashboard-greeting-text">Good Evening {userFullName}!</span>
         </div>
         <div className="dashboard-controls">
           <select className="dashboard-select"><option>Choose</option></select>

@@ -66,6 +66,7 @@ export default function Schedule() {
 
   // Check login status
   const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user.email') : null;
+  const userFullName = typeof window !== 'undefined' ? localStorage.getItem('user.fullName') || localStorage.getItem('user.username') : null;
 
   // Schedule a post
   const handleSchedule = async () => {
