@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import API_BASE_URL from "../config";
 
+const NICHES = ['default', 'fitness', 'travel', 'tech', 'fashion', 'education', 'finance', 'food', 'lifestyle', 'gaming'];
+
 const getNiche = () => localStorage.getItem('niche') || 'default';
 const setNiche = (niche) => localStorage.setItem('niche', niche);
 
@@ -38,12 +40,18 @@ export default function HashtagSuggester({ content, platform, audience }) {
     <div className="hashtag-suggester">
       <div style={{ marginBottom: 8 }}>
         <label>Niche: </label>
-        <input value={niche} onChange={handleNicheChange} placeholder="e.g. fitness, travel, tech" />
+        <select value={niche} onChange={handleNicheChange}>
+          {NICHES.map((n) => (
+            <option key={n} value={n}>{n.charAt(0).toUpperCase() + n.slice(1)}</option>
+          ))}
+        </select>
         <button onClick={fetchSuggestions} disabled={loading} style={{ marginLeft: 8 }}>
           {loading ? 'Loading...' : 'Suggest Tags & Title'}
         </button>
       </div>
+
       {error && <div style={{ color: 'red' }}>{error}</div>}
+
       {suggestions && (
         <div className="suggestion-results">
           <div><b>SEO Title:</b> {suggestions.title}</div>
@@ -53,4 +61,4 @@ export default function HashtagSuggester({ content, platform, audience }) {
       )}
     </div>
   );
-} 
+}

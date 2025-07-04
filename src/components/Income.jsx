@@ -124,7 +124,6 @@ export default function Income() {
               <p className="income-suggestion-text">{suggestion}</p>
               <div className="income-suggestion-tools">
                 <SentimentAnalyzer text={suggestion} />
-                <BestTimeRecommender platform="instagram" />
               </div>
             </li>
           ))}
