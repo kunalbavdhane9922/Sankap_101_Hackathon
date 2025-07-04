@@ -141,9 +141,7 @@ app.post('/auth/signup', async (req, res) => {
     let user = await User.findOne({ $or: [{ username }, { email }] });
     if (user) return res.status(400).json({ error: 'User already exists' });
     const hash = await bcrypt.hash(password, 10);
-    user = await User.create({ username, password: hash, preferences: { niche: '', notifications: true, theme: 'light' } });
-    user.email = email; // Save email as a property (not in schema, but for demo)
-    await user.save();
+    user = await User.create({ username, email, password: hash, preferences: { niche: '', notifications: true, theme: 'light' } });
     res.json({ email });
   } catch (err) {
     res.status(500).json({ error: 'Signup failed' });
