@@ -9,8 +9,16 @@ export default function Profile() {
     fullName: "",
     mobileNumber: "",
     bio: "",
-    profilePhoto: ""
+    profession: "",
+    profilePhoto: "",
+    social: {
+      instagram: "",
+      youtube: "",
+      facebook: "",
+      twitter: ""
+    }
   });
+
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -20,20 +28,8 @@ export default function Profile() {
   const userEmail = localStorage.getItem("user.email");
 
   useEffect(() => {
-    if (userEmail) {
-      loadProfile();
-    }
+    if (userEmail) loadProfile();
   }, [userEmail]);
-
-  // Update localStorage with username and profilePhoto after profile fetch
-  useEffect(() => {
-    if (profile.username) {
-      localStorage.setItem("user.username", profile.username);
-    }
-    if (profile.profilePhoto) {
-      localStorage.setItem("user.profilePhoto", profile.profilePhoto);
-    }
-  }, [profile.username, profile.profilePhoto]);
 
   const loadProfile = async () => {
     try {
@@ -55,33 +51,17 @@ export default function Profile() {
     setSaving(true);
     setError("");
     setSuccess("");
-    
+
     try {
       const res = await fetch(`${API_BASE_URL}/api/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: userEmail,
-          fullName: profile.fullName,
-          mobileNumber: profile.mobileNumber,
-          bio: profile.bio
-        })
+        body: JSON.stringify({ email: userEmail, ...profile })
       });
-      
+
       if (res.ok) {
         setSuccess("Profile updated successfully!");
         setIsEditing(false);
-        // Update localStorage with new fullName and username
-        if (profile.username) {
-          localStorage.setItem("user.username", profile.username);
-        }
-        if (profile.fullName) {
-          localStorage.setItem("user.fullName", profile.fullName);
-        }
-        // Optionally update profilePhoto if changed
-        if (profile.profilePhoto) {
-          localStorage.setItem("user.profilePhoto", profile.profilePhoto);
-        }
       } else {
         const data = await res.json();
         setError(data.error || "Failed to update profile");
@@ -97,11 +77,10 @@ export default function Profile() {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Convert to base64 for demo (in production, use proper file upload)
     const reader = new FileReader();
     reader.onload = async (e) => {
       const base64Photo = e.target.result;
-      
+
       try {
         const res = await fetch(`${API_BASE_URL}/api/profile/photo`, {
           method: "POST",
@@ -111,15 +90,11 @@ export default function Profile() {
             profilePhoto: base64Photo
           })
         });
-        
+
         if (res.ok) {
           const data = await res.json();
-          setProfile(prev => ({ ...prev, profilePhoto: data.profilePhoto }));
+          setProfile((prev) => ({ ...prev, profilePhoto: data.profilePhoto }));
           setSuccess("Profile photo updated!");
-          // Update localStorage with new profile photo
-          if (data.profilePhoto) {
-            localStorage.setItem("user.profilePhoto", data.profilePhoto);
-          }
         } else {
           const data = await res.json().catch(() => ({}));
           setError(data.error || "Failed to update profile photo");
@@ -132,24 +107,31 @@ export default function Profile() {
   };
 
   const handleChange = (e) => {
-    setProfile(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    const { name, value } = e.target;
+    if (["instagram", "youtube", "facebook", "twitter"].includes(name)) {
+      setProfile((prev) => ({
+        ...prev,
+        social: {
+          ...prev.social,
+          [name]: value
+        }
+      }));
+    } else {
+      setProfile((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  if (loading) {
-    return <div className="profile-loading">Loading profile...</div>;
-  }
+  const professions = [
+    "Student", "Engineer", "Designer", "Developer", "Artist", "Writer", "Entrepreneur", "Other"
+  ];
+
+  if (loading) return <div className="profile-loading">Loading profile...</div>;
 
   return (
     <div className="profile-container">
       <div className="profile-header">
         <h1>Profile</h1>
-        <button 
-          className="profile-edit-btn"
-          onClick={() => setIsEditing(!isEditing)}
-        >
+        <button className="profile-edit-btn" onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? "Cancel" : "Edit Profile"}
         </button>
       </div>
@@ -161,26 +143,16 @@ export default function Profile() {
         <div className="profile-photo-section">
           <div className="profile-photo">
             {profile.profilePhoto ? (
-              <img 
-                src={profile.profilePhoto} 
-                alt="Profile" 
-              />
+              <img src={profile.profilePhoto} alt="Profile" />
             ) : (
               <div className="profile-photo-placeholder">
-                {profile.fullName ? profile.fullName.charAt(0).toUpperCase() : profile.username ? profile.username.charAt(0).toUpperCase() : 'U'}
+                {profile.fullName?.charAt(0).toUpperCase() || profile.username?.charAt(0).toUpperCase() || "U"}
               </div>
             )}
             {isEditing && (
               <div className="photo-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                  id="photo-upload"
-                />
-                <label htmlFor="photo-upload" className="upload-btn">
-                  Change Photo
-                </label>
+                <input type="file" accept="image/*" onChange={handlePhotoUpload} id="photo-upload" />
+                <label htmlFor="photo-upload" className="upload-btn">Change Photo</label>
               </div>
             )}
           </div>
@@ -189,22 +161,12 @@ export default function Profile() {
         <div className="profile-details">
           <div className="profile-field">
             <label>Username</label>
-            <input
-              type="text"
-              value={profile.username}
-              disabled
-              className="profile-input disabled"
-            />
+            <input type="text" value={profile.username} disabled className="profile-input disabled" />
           </div>
 
           <div className="profile-field">
             <label>Email</label>
-            <input
-              type="email"
-              value={profile.email}
-              disabled
-              className="profile-input disabled"
-            />
+            <input type="email" value={profile.email} disabled className="profile-input disabled" />
           </div>
 
           <div className="profile-field">
@@ -215,7 +177,7 @@ export default function Profile() {
               value={profile.fullName}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
             />
           </div>
 
@@ -227,7 +189,7 @@ export default function Profile() {
               value={profile.mobileNumber}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
             />
           </div>
 
@@ -238,19 +200,83 @@ export default function Profile() {
               value={profile.bio}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`profile-textarea ${!isEditing ? 'disabled' : ''}`}
+              className={`profile-textarea ${!isEditing ? "disabled" : ""}`}
               rows="4"
               placeholder="Tell us about yourself..."
             />
           </div>
 
+          <div className="profile-field">
+            <label>Profession</label>
+            <select
+              name="profession"
+              value={profile.profession}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
+            >
+              <option value="">Select Profession</option>
+              {professions.map((prof) => (
+                <option key={prof} value={prof}>{prof}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="profile-field">
+            <label>Instagram</label>
+            <input
+              type="url"
+              name="instagram"
+              value={profile.social.instagram}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
+              placeholder="https://instagram.com/username"
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>YouTube</label>
+            <input
+              type="url"
+              name="youtube"
+              value={profile.social.youtube}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
+              placeholder="https://youtube.com/channel/xyz"
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>Facebook</label>
+            <input
+              type="url"
+              name="facebook"
+              value={profile.social.facebook}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
+              placeholder="https://facebook.com/username"
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>Twitter</label>
+            <input
+              type="url"
+              name="twitter"
+              value={profile.social.twitter}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? "disabled" : ""}`}
+              placeholder="https://twitter.com/username"
+            />
+          </div>
+
           {isEditing && (
             <div className="profile-actions">
-              <button 
-                className="profile-save-btn"
-                onClick={handleSave}
-                disabled={saving}
-              >
+              <button className="profile-save-btn" onClick={handleSave} disabled={saving}>
                 {saving ? "Saving..." : "Save Changes"}
               </button>
             </div>
@@ -259,4 +285,4 @@ export default function Profile() {
       </div>
     </div>
   );
-} 
+}

@@ -224,10 +224,26 @@ body {
   background: none;
 }
 .calendar-days .highlight {
-  background: #a18aff;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
   color: #fff;
   font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
+.calendar-days .has-post {
+  background: linear-gradient(90deg, #fcb045 0%, #fd1d1d 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.calendar-header .month {
+  background: linear-gradient(90deg, #833ab4, #fd1d1d, #fcb045);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+
 
 /* Responsive Styles */
 @media (max-width: 900px) {
