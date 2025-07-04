@@ -41,19 +41,19 @@ export default function CompetitorComparison({ niche }) {
   const maxEngagement = Math.max(data.you.engagement, data.topCompetitor.engagement, data.average.engagement);
 
   return (
-    <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: 24, margin: '24px 0' }}>
-      <h2>Competitor Comparison</h2>
-      <p style={{ color: '#555', marginBottom: 18 }}>
+    <div style={{ background: 'linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%)', color: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.13)', padding: 24, margin: '24px 0' }}>
+      <h2 style={{ color: '#fff' }}>Competitor Comparison</h2>
+      <p style={{ color: '#fff', marginBottom: 18 }}>
         See how your followers and engagement compare to others in the <b>{niche}</b> niche. This uses live data from your database.
       </p>
       <div style={{ display: 'flex', gap: 32, justifyContent: 'space-between', flexWrap: 'wrap' }}>
         {/* Followers Bar Chart */}
         <div style={{ flex: 1, minWidth: 220 }}>
-          <h4>Followers</h4>
+          <h4 style={{ color: '#fff' }}>Followers</h4>
           {["you", "topCompetitor", "average"].map(key => (
             <div key={key} style={{ marginBottom: 10 }}>
               <span style={{ display: 'inline-block', width: 110 }}>{key === 'you' ? 'You' : key === 'topCompetitor' ? 'Top Competitor' : 'Average'}</span>
-              <div style={{ display: 'inline-block', verticalAlign: 'middle', height: 18, background: '#eee', borderRadius: 8, width: 120 }}>
+              <div style={{ display: 'inline-block', verticalAlign: 'middle', height: 18, background: 'rgba(255,255,255,0.25)', borderRadius: 8, width: 120 }}>
                 <div style={{
                   width: `${maxFollowers ? (data[key].followers / maxFollowers) * 100 : 0}%`,
                   background: COLORS[key],
@@ -67,11 +67,11 @@ export default function CompetitorComparison({ niche }) {
         </div>
         {/* Engagement Bar Chart */}
         <div style={{ flex: 1, minWidth: 220 }}>
-          <h4>Engagement (%)</h4>
+          <h4 style={{ color: '#fff' }}>Engagement (%)</h4>
           {["you", "topCompetitor", "average"].map(key => (
             <div key={key} style={{ marginBottom: 10 }}>
               <span style={{ display: 'inline-block', width: 110 }}>{key === 'you' ? 'You' : key === 'topCompetitor' ? 'Top Competitor' : 'Average'}</span>
-              <div style={{ display: 'inline-block', verticalAlign: 'middle', height: 18, background: '#eee', borderRadius: 8, width: 120 }}>
+              <div style={{ display: 'inline-block', verticalAlign: 'middle', height: 18, background: 'rgba(255,255,255,0.25)', borderRadius: 8, width: 120 }}>
                 <div style={{
                   width: `${maxEngagement ? (data[key].engagement / maxEngagement) * 100 : 0}%`,
                   background: COLORS[key],
@@ -84,7 +84,7 @@ export default function CompetitorComparison({ niche }) {
           ))}
         </div>
       </div>
-      <div style={{ marginTop: 18, color: '#888', fontSize: 14 }}>
+      <div style={{ marginTop: 18, color: '#fff', fontSize: 14 }}>
         <b>Note:</b> This is now a live feature using your database. In a real app, data would come from social APIs and ML models.
       </div>
     </div>
