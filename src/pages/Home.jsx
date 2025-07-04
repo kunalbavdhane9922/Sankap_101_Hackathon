@@ -59,6 +59,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [dashboardType, setDashboardType] = useState('dashboard1');
 
   // Navbar button handlers
   const handleInboxClick = () => {
@@ -149,7 +150,10 @@ const Home = () => {
           <span className="dashboard-greeting-text">Welcome {username}!</span>
         </div>
         <div className="dashboard-controls">
-          <select className="dashboard-select"><option>Choose</option></select>
+          <select className="dashboard-select" value={dashboardType} onChange={e => setDashboardType(e.target.value)}>
+            <option value="dashboard1">Dashboard 1</option>
+            <option value="dashboard2">Dashboard 2</option>
+          </select>
           <button className="dashboard-icon-btn" onClick={handleInboxClick}><span role="img" aria-label="inbox">📥</span></button>
           <button className="dashboard-icon-btn dashboard-icon-btn-bell" onClick={handleBellClick}><span role="img" aria-label="bell">🔔</span></button>
           <button className="dashboard-icon-btn" onClick={handleUserClick}><span role="img" aria-label="user">👤</span></button>
@@ -165,39 +169,58 @@ const Home = () => {
         </div>
       </div>
       <div className="dashboard-content-row">
-        <div className="dashboard-main-content">
-          {/* Bar Chart */}
-          {instagramAccount && (
-            <div className="dashboard-section">
-              <h3 className="dashboard-section-title">Instagram Subscribers</h3>
-              <div className="dashboard-barchart">
-                {barChartData.map((val, i) => (
-                  <div key={i} className="dashboard-bar" style={{ height: val, background: i % 2 === 0 ? '#7d4cff' : '#22c55e' }}></div>
-                ))}
-              </div>
-              <div className="dashboard-barchart-labels">
-                {barChartLabels.map((label, i) => (
-                  <span key={i}>{label}</span>
-                ))}
-              </div>
-            </div>
-          )}
-          {/* Analytics Cards */}
-          <div className="dashboard-cards-row">
-            {loading && <div>Loading analytics...</div>}
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            {accounts.length === 0 && !loading && (
-              <div className="no-accounts-message">
-                No accounts connected. Go to the Users page to add your social accounts!
+        {dashboardType === 'dashboard1' ? (
+          <div className="dashboard-main-content">
+            {/* Bar Chart */}
+            {instagramAccount && (
+              <div className="dashboard-section">
+                <h3 className="dashboard-section-title">Instagram Subscribers</h3>
+                <div className="dashboard-barchart">
+                  {barChartData.map((val, i) => (
+                    <div key={i} className="dashboard-bar" style={{ height: val, background: i % 2 === 0 ? '#7d4cff' : '#22c55e' }}></div>
+                  ))}
+                </div>
+                <div className="dashboard-barchart-labels">
+                  {barChartLabels.map((label, i) => (
+                    <span key={i}>{label}</span>
+                  ))}
+                </div>
               </div>
             )}
-            {accounts.map((account, idx) => (
-              <AnalyticsCard key={account._id || account.platform + idx} account={account} analytics={analytics[account._id]} />
-            ))}
+            {/* Analytics Cards */}
+            <div className="dashboard-cards-row">
+              {loading && <div>Loading analytics...</div>}
+              {error && <div style={{ color: 'red' }}>{error}</div>}
+              {accounts.length === 0 && !loading && (
+                <div className="no-accounts-message">
+                  No accounts connected. Go to the Users page to add your social accounts!
+                </div>
+              )}
+              {accounts.map((account, idx) => (
+                <AnalyticsCard key={account._id || account.platform + idx} account={account} analytics={analytics[account._id]} />
+              ))}
+            </div>
+            {/* Competitor Comparison Feature */}
+            <CompetitorComparison niche="fitness" />
           </div>
-          {/* Competitor Comparison Feature */}
-          <CompetitorComparison niche="fitness" />
-        </div>
+        ) : (
+          <div className="dashboard-main-content">
+            <div className="dashboard-section" style={{ textAlign: 'center', padding: 40 }}>
+              <h2 style={{ color: '#7d4cff', marginBottom: 16 }}>Dashboard 2: Alternate Layout</h2>
+              <p style={{ fontSize: 18, color: '#444' }}>This is a different dashboard layout. You can customize this section to show different analytics, widgets, or summaries as needed.</p>
+              <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center', gap: 32 }}>
+                <div style={{ background: '#ede9fe', borderRadius: 12, padding: 24, minWidth: 180 }}>
+                  <div style={{ fontWeight: 700, fontSize: 22, color: '#7d4cff' }}>Widget A</div>
+                  <div style={{ fontSize: 16, color: '#666', marginTop: 8 }}>Custom content here</div>
+                </div>
+                <div style={{ background: '#fef9c3', borderRadius: 12, padding: 24, minWidth: 180 }}>
+                  <div style={{ fontWeight: 700, fontSize: 22, color: '#eab308' }}>Widget B</div>
+                  <div style={{ fontSize: 16, color: '#666', marginTop: 8 }}>More custom content</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="dashboard-right">
           <div className="dashboard-summary">
             <h4>Account Summary</h4>
