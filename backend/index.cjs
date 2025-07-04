@@ -87,6 +87,28 @@ app.post('/test-login', async (req, res) => {
   }
 });
 
+// Fix demo user endpoint
+app.post('/fix-demo-user', async (req, res) => {
+  try {
+    // Delete existing demo user
+    await User.deleteOne({ username: 'demo' });
+    
+    // Create new demo user with email
+    const username = 'demo';
+    const email = 'demo@example.com';
+    const password = 'demo123';
+    const hash = await bcrypt.hash(password, 10);
+    
+    const user = new User({ username, email, password: hash });
+    await user.save();
+    
+    res.json({ success: true, message: 'Demo user recreated with email' });
+  } catch (err) {
+    console.error('Fix demo user error:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // --- MongoDB-powered endpoints ---
 
 // Add a new account for a user (default user if not provided)

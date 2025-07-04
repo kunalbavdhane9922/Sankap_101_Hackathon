@@ -26,8 +26,10 @@ export default function Login({ onLogin }) {
       const data = await res.json();
       console.log('Response data:', data);
       
-      if (res.ok && data.email) {
-        localStorage.setItem("user.email", data.email);
+      if (res.ok) {
+        // If email is empty, use username as fallback
+        const userEmail = data.email || form.username;
+        localStorage.setItem("user.email", userEmail);
         if (onLogin) onLogin(data);
       } else {
         setError(data.error || "Login failed");
