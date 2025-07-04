@@ -9,7 +9,12 @@ export default function Profile() {
     fullName: "",
     mobileNumber: "",
     bio: "",
-    profilePhoto: ""
+    profilePhoto: "",
+    profession: "",
+    instagram: "",
+    facebook: "",
+    twitter: "",
+    youtube: ""
   });
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -64,7 +69,12 @@ export default function Profile() {
           email: userEmail,
           fullName: profile.fullName,
           mobileNumber: profile.mobileNumber,
-          bio: profile.bio
+          bio: profile.bio,
+          profession: profile.profession,
+          instagram: profile.instagram,
+          facebook: profile.facebook,
+          twitter: profile.twitter,
+          youtube: profile.youtube
         })
       });
       
@@ -242,6 +252,69 @@ export default function Profile() {
               rows="4"
               placeholder="Tell us about yourself..."
             />
+          </div>
+
+          <div className="profile-field">
+            <label>Profession</label>
+            <input
+              type="text"
+              name="profession"
+              value={profile.profession}
+              onChange={handleChange}
+              disabled={!isEditing}
+              className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>Social Media Links</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <input
+                type="url"
+                name="instagram"
+                placeholder="Instagram URL"
+                value={profile.instagram}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              />
+              <input
+                type="url"
+                name="facebook"
+                placeholder="Facebook URL"
+                value={profile.facebook}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              />
+              <input
+                type="url"
+                name="twitter"
+                placeholder="Twitter URL"
+                value={profile.twitter}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              />
+              <input
+                type="url"
+                name="youtube"
+                placeholder="YouTube URL"
+                value={profile.youtube}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`profile-input ${!isEditing ? 'disabled' : ''}`}
+              />
+            </div>
+            {/* Show links if not editing */}
+            {!isEditing && (
+              <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {profile.instagram && <a href={profile.instagram} target="_blank" rel="noopener noreferrer" style={{ color: '#dd2a7b' }}>Instagram</a>}
+                {profile.facebook && <a href={profile.facebook} target="_blank" rel="noopener noreferrer" style={{ color: '#1877F3' }}>Facebook</a>}
+                {profile.twitter && <a href={profile.twitter} target="_blank" rel="noopener noreferrer" style={{ color: '#1DA1F2' }}>Twitter</a>}
+                {profile.youtube && <a href={profile.youtube} target="_blank" rel="noopener noreferrer" style={{ color: '#FF0000' }}>YouTube</a>}
+              </div>
+            )}
           </div>
 
           {isEditing && (

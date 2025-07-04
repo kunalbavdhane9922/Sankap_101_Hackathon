@@ -1,73 +1,97 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import React from "react";
-function Slidebar(){
-    const navigate = useNavigate();
-    const userEmail = typeof window !== 'undefined' ? localStorage.getItem('user.email') : null;
-    const userFullName = typeof window !== 'undefined' ? localStorage.getItem('user.fullName') || localStorage.getItem('user.username') : null;
-    const userProfilePhoto = typeof window !== 'undefined' ? localStorage.getItem('user.profilePhoto') : "";
-    const handleLogout = () => {
-      localStorage.removeItem('user.email');
-      window.location.reload();
-    };
-    return(
-        <div className="sidebar">
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#7d4cff' }}>Social Platform</h1>
-        <nav>
-          <NavLink to="/" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'} end>Home</NavLink>
-          <NavLink to="/schedule" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Schedule Posts</NavLink>
-          <NavLink to="/users" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Social Media Accounts</NavLink>
-          <NavLink to="/income" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Income</NavLink>
-          <NavLink to="/billing" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Billing</NavLink>
-          <NavLink to="/settings" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Settings</NavLink>
-          <NavLink to="/profile" className={({isActive}) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Profile</NavLink>
-        </nav>
-        <div style={{ marginTop: '30px' }}>
-          <h4 style={{ color: '#555', marginBottom: '10px' }}>Scheduled Events</h4>
-          <ul style={{ listStyle: 'none', padding: 0, fontSize: '14px', color: '#666' }}>
-            <li><span style={{ color: '#2196f3' }}>●</span> Hubby Bday</li>
-            <li><span style={{ color: '#9c27b0' }}>●</span> Sis Anniversary</li>
-            <li><span style={{ color: '#4caf50' }}>●</span> Bestie Wedding</li>
-          </ul>
-        </div>
-        <div style={{ marginTop: 'auto', fontSize: '14px', color: '#888' }}>
-          {userEmail ? (
-            <>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 8 }}>
-                {userProfilePhoto ? (
-                  <img 
-                    src={userProfilePhoto} 
-                    alt="Profile" 
-                    style={{ width: 24, height: 24, borderRadius: '50%' }}
-                  />
-                ) : (
-                  <div style={{ 
-                    width: 24, 
-                    height: 24, 
-                    borderRadius: '50%', 
-                    background: '#7d4cff', 
-                    color: 'white', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    fontSize: '12px', 
-                    fontWeight: 'bold' 
-                  }}>
-                    {userFullName ? userFullName.charAt(0).toUpperCase() : 'U'}
-                  </div>
-                )}
-                <div>
-                  <div style={{ fontWeight: 600, color: '#333' }}>{userFullName}</div>
-                  <div style={{ fontSize: 12 }}>{userEmail}</div>
-                </div>
-              </div>
-              <button onClick={handleLogout} style={{ padding: '6px 18px', borderRadius: 8, background: '#eee', color: '#a00', border: 'none', fontWeight: 600, cursor: 'pointer' }}>Logout</button>
-            </>
+import React, { useEffect, useState } from "react";
+
+function Sidebar() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    email: '',
+    fullName: '',
+    profilePhoto: ''
+  });
+  const [userPosts, setUserPosts] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUserData({
+        email: localStorage.getItem('user.email'),
+        fullName: localStorage.getItem('user.fullName') || localStorage.getItem('user.username'),
+        profilePhoto: localStorage.getItem('user.profilePhoto') || ''
+      });
+
+      const posts = JSON.parse(localStorage.getItem('user.posts') || '[]');
+      setUserPosts(posts);
+
+      const darkPref = localStorage.getItem('darkMode') === 'true';
+      setDarkMode(darkPref);
+      document.body.classList.toggle('dark', darkPref);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user.email');
+    window.location.reload();
+  };
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('darkMode', newMode);
+    document.body.classList.toggle('dark', newMode);
+  };
+
+  return (
+    <div className={`sidebar ${darkMode ? 'dark' : ''}`}>
+      <h1 className="sidebar-title">Social Platform</h1>
+      <button onClick={toggleDarkMode} className="dark-toggle">
+        {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+      </button>
+
+      <nav>
+        <NavLink to="/" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'} end>Home</NavLink>
+        <NavLink to="/schedule" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Schedule Posts</NavLink>
+        <NavLink to="/users" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Social Media Accounts</NavLink>
+        <NavLink to="/income" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Income</NavLink>
+        <NavLink to="/billing" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Billing</NavLink>
+        <NavLink to="/settings" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Settings</NavLink>
+        <NavLink to="/profile" className={({ isActive }) => isActive ? 'sidebar-link active' : 'sidebar-link'}>Profile</NavLink>
+      </nav>
+
+      <div style={{ marginTop: '30px' }}>
+        <h4 className="section-title">Your Recent Posts</h4>
+        <ul className="posts-list">
+          {userPosts.length > 0 ? (
+            userPosts.slice(0, 3).map((post, index) => (
+              <li key={index}>{post.title || post.content?.substring(0, 30)}...</li>
+            ))
           ) : (
-            <button onClick={() => navigate('/login')} style={{ padding: '6px 18px', borderRadius: 8, background: '#7d4cff', color: '#fff', border: 'none', fontWeight: 600, cursor: 'pointer' }}>Login</button>
+            <li>No posts yet.</li>
           )}
-        </div>
+        </ul>
       </div>
-    )
+
+      <div style={{ marginTop: 'auto', fontSize: '14px', color: '#888' }}>
+        {userData.email ? (
+          <>
+            <div className="user-info">
+              {userData.profilePhoto ? (
+                <img src={userData.profilePhoto} alt="Profile" className="profile-pic" />
+              ) : (
+                <div className="profile-initial">{userData.fullName?.charAt(0).toUpperCase() || 'U'}</div>
+              )}
+              <div>
+                <div style={{ fontWeight: 600 }}>{userData.fullName}</div>
+                <div style={{ fontSize: 12 }}>{userData.email}</div>
+              </div>
+            </div>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
+          </>
+        ) : (
+          <button onClick={() => navigate('/login')} className="login-button">Login</button>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default Slidebar;
+export default Sidebar;
