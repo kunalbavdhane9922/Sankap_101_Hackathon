@@ -90,7 +90,7 @@
 
 /* Buttons */
 .add-account-btn {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%);
   color: #fff;
   border: none;
   border-radius: var(--radius-md);
@@ -103,11 +103,11 @@
   box-shadow: 0 2px 8px rgba(125, 76, 255, 0.08);
 }
 .add-account-btn:hover {
-  background: var(--color-primary-dark);
+  background: linear-gradient(135deg, #dd2a7b 0%, #f58529 100%);
 }
 
 .remove-account-btn {
-  background: var(--color-accent);
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 60%, #8134af 100%);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -118,7 +118,7 @@
   transition: background var(--transition);
 }
 .remove-account-btn:hover {
-  background: #d9363e;
+  background: linear-gradient(135deg, #dd2a7b 0%, #f58529 100%);
 }
 
 /* Modal */
@@ -154,13 +154,16 @@
   font-size: 1.08rem;
   border-radius: var(--radius-md);
   transition: background var(--transition);
+  color: #fff;
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%);
 }
 .platform-option:hover {
-  background: #f3f4f6;
+  background: linear-gradient(135deg, #dd2a7b 0%, #f58529 100%);
+  color: #fff;
 }
 .close-modal-btn {
-  background: #eee;
-  color: #444;
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 60%, #8134af 100%);
+  color: #fff;
   border: none;
   border-radius: var(--radius-sm);
   padding: var(--space-1) var(--space-4);
