@@ -195,7 +195,7 @@ export default function Schedule() {
                 onSuggest={res => setHashtags(res?.hashtags || [])}
               />
               <BestTimeRecommender platform={platform} />
-              <CaptionGenerator />
+              <CaptionGeneratorWrapper content={content} image={image} setCaption={setCaption} />
             </div>
             <div style={{ flex: 1, minWidth: 260 }}>
               <SentimentAnalyzer text={content} />
@@ -269,6 +269,42 @@ export default function Schedule() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CaptionGeneratorWrapper({ content, image, setCaption }) {
+  const [aiCaption, setAiCaption] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const handleGenerate = async () => {
+    setLoading(true);
+    setError("");
+    setAiCaption("");
+    try {
+      const { generateCaptionAI } = await import("../utils/captionGen");
+      const keywords = content.split(/\s+/).filter(Boolean).slice(0, 5); // up to 5 keywords
+      const result = await generateCaptionAI({ filename: image, keywords });
+      setAiCaption(result);
+    } catch (e) {
+      setError("Failed to generate caption.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <div style={{ margin: '16px 0', padding: 12, background: '#f8fafc', borderRadius: 10, boxShadow: '0 1px 4px #eee' }}>
+      <div style={{ fontWeight: 600, color: '#7d4cff', marginBottom: 6 }}>AI Caption Generator</div>
+      <button onClick={handleGenerate} disabled={loading} style={{ background: '#7d4cff', color: 'white', border: 'none', borderRadius: 6, padding: '6px 16px', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', marginBottom: 8 }}>
+        {loading ? 'Generating...' : 'Generate Caption'}
+      </button>
+      {error && <div style={{ color: 'red', marginBottom: 6 }}>{error}</div>}
+      {aiCaption && (
+        <div style={{ marginTop: 6 }}>
+          <textarea value={aiCaption} readOnly rows={2} style={{ width: '100%', borderRadius: 6, border: '1px solid #ddd', padding: 6, fontStyle: 'italic', background: '#f4f4ff', color: '#333', resize: 'none' }} />
+          <button onClick={() => setCaption(aiCaption)} style={{ marginTop: 6, background: '#22c55e', color: 'white', border: 'none', borderRadius: 6, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Insert Caption</button>
+        </div>
+      )}
     </div>
   );
 }
