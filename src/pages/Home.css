@@ -79,7 +79,8 @@
 }
 
 .dashboard-section {
-  background: var(--color-surface);
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%);
+  color: #fff;
   border-radius: var(--radius-lg);
   box-shadow: var(--color-shadow);
   padding: var(--space-4) var(--space-5);
@@ -120,8 +121,9 @@
   align-items: stretch;
 }
 .analytics-card {
-  background: var(--color-surface);
-  border: 2px solid #eee;
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%);
+  color: #fff;
+  border: none;
   border-radius: var(--radius-lg);
   box-shadow: var(--color-shadow);
   padding: var(--space-4) var(--space-5);
@@ -268,13 +270,12 @@
   gap: var(--space-3);
 }
 .dashboard-payment-card {
-  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 40%, #8134af 70%, #515bd4 100%);
   color: #fff;
-  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--color-shadow);
+  padding: var(--space-4) var(--space-5);
   margin-bottom: var(--space-2);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
 }
 .dashboard-payment-percent {
   font-size: 1.1rem;
