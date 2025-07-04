@@ -178,7 +178,7 @@ export default function Schedule() {
               placeholder="Remind (min before)"
               title="Remind me this many minutes before scheduled time"
             />
-            <button onClick={handleSchedule} style={{ padding: '8px 18px', borderRadius: 8, background: '#7d4cff', color: '#fff', fontWeight: 600, border: 'none' }}>Schedule Post</button>
+            <button onClick={handleSchedule} className="schedule-post-btn"> Schedule Post</button>
           </div>
           <textarea
             placeholder="Write your post content here..."
