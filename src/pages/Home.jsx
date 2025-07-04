@@ -62,6 +62,7 @@ const Home = () => {
   // Get user data from localStorage
   const userEmail = localStorage.getItem("user.email");
   const userFullName = localStorage.getItem("user.fullName") || localStorage.getItem("user.username") || "User";
+  const username = localStorage.getItem("user.username") || "User";
   const userProfilePhoto = localStorage.getItem("user.profilePhoto") || "";
 
   // Fetch accounts and analytics from backend
@@ -117,10 +118,10 @@ const Home = () => {
             <img src={userProfilePhoto} alt="avatar" className="dashboard-avatar" />
           ) : (
             <div className="dashboard-avatar-placeholder">
-              {userFullName.charAt(0).toUpperCase()}
+              {username.charAt(0).toUpperCase()}
             </div>
           )}
-          <span className="dashboard-greeting-text">Good Evening {userFullName}!</span>
+          <span className="dashboard-greeting-text">Welcome {username}!</span>
         </div>
         <div className="dashboard-controls">
           <select className="dashboard-select"><option>Choose</option></select>
