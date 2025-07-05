@@ -1,14 +1,12 @@
 // Dummy best post timing utility
 // Usage: getBestTimes(platform) => [ ... ]
 
-const bestTimes = {
-  instagram: ['8:00 AM', '1:00 PM', '7:00 PM'],
-  facebook: ['9:00 AM', '12:00 PM', '5:00 PM'],
-  youtube: ['11:00 AM', '3:00 PM', '8:00 PM'],
-  twitter: ['7:00 AM', '12:00 PM', '6:00 PM'],
-  default: ['10:00 AM', '2:00 PM', '8:00 PM']
-};
+const { geminiGenerateContent } = require('../../backend/utils/gemini');
 
-export function getBestTimes(platform) {
-  return bestTimes[platform] || bestTimes.default;
-} 
+async function getBestTimesToPost({ platform, niche }) {
+  const prompt = `For the ${platform} platform and the ${niche} niche, suggest the 3 best times of day to post for maximum engagement. Respond with times only, separated by commas.`;
+  const result = await geminiGenerateContent(prompt, 'You are a social media analytics expert.');
+  return result.split(',').map(t => t.trim()).filter(Boolean);
+}
+
+module.exports = { getBestTimesToPost }; 

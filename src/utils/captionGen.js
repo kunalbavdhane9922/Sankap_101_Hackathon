@@ -24,10 +24,18 @@ export function generateCaption({ filename = '', keywords = [] }) {
   return templates[Math.floor(Math.random()*templates.length)];
 }
 
-// Simulate an async AI API call (replace with real API integration if needed)
-export async function generateCaptionAI({ filename = '', keywords = [] }) {
-  // Simulate network delay
-  await new Promise(res => setTimeout(res, 700));
-  // Use the same logic for now, but you can replace this with a fetch to an AI API
-  return generateCaption({ filename, keywords }) + ' (AI)';
-} 
+// Node.js backend version for Gemini
+const { geminiGenerateContent } = require('../../backend/utils/gemini');
+
+async function generateCaptionAI({ filename, keywords }) {
+  const prompt = `Generate a catchy social media caption for an image with these keywords: ${keywords.join(', ')}.`;
+  return await geminiGenerateContent(prompt, 'You are a creative social media assistant.');
+}
+
+async function suggestHashtagsAI({ content, platform }) {
+  const prompt = `Suggest 5 trending hashtags for a ${platform} post with this content: ${content}. Return only the hashtags separated by spaces.`;
+  const result = await geminiGenerateContent(prompt, 'You are a social media hashtag expert.');
+  return result.match(/#[\w]+/g) || [];
+}
+
+module.exports = { generateCaptionAI, suggestHashtagsAI }; 
