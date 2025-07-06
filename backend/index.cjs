@@ -14,6 +14,7 @@ app.use(express.json());
 const User = require('./models/User');
 const Account = require('./models/Account');
 const Analytics = require('./models/Analytics');
+const Feedback = require('./models/Feedback');
 
 // API endpoints
 app.get('/income', require('./income.cjs'));
@@ -30,10 +31,6 @@ app.get('/twitter', require('./twitter.cjs'));
 // Register competitor comparison route
 const compareCompetitors = require('./compareCompetitors.cjs');
 app.use(compareCompetitors);
-
-// Gemini AI proxy route
-const geminiProxy = require('./geminiProxy.cjs');
-app.use(geminiProxy);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -183,6 +180,20 @@ app.delete('/api/accounts/:id', async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error('Failed to delete account:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Store feedback
+app.post('/api/feedback', async (req, res) => {
+  try {
+    const { text, rating } = req.body;
+    if (!text || !rating) {
+      return res.status(400).json({ error: 'Text and rating are required' });
+    }
+    const feedback = await Feedback.create({ text, rating });
+    res.json({ success: true, feedback });
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
