@@ -5,7 +5,7 @@ export const AI_SERVICES = {
   gemini: {
     generateCaption: async (prompt) => {
       try {
-        const response = await fetch(`/api/gemini`, {
+        const response = await fetch(`${API_BASE_URL}/api/gemini`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'caption', prompt })
@@ -20,7 +20,7 @@ export const AI_SERVICES = {
     },
     analyzeSentiment: async (text) => {
       try {
-        const response = await fetch(`/api/gemini`, {
+        const response = await fetch(`${API_BASE_URL}/api/gemini`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'sentiment', text })
@@ -35,7 +35,7 @@ export const AI_SERVICES = {
     },
     generateHashtags: async (content, platform, niche) => {
       try {
-        const response = await fetch(`/api/gemini`, {
+        const response = await fetch(`${API_BASE_URL}/api/gemini`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'hashtags', content, platform, niche })
@@ -50,7 +50,7 @@ export const AI_SERVICES = {
     },
     generateReplies: async (content) => {
       try {
-        const response = await fetch(`/api/gemini`, {
+        const response = await fetch(`${API_BASE_URL}/api/gemini`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'replies', content })
@@ -69,7 +69,7 @@ export const AI_SERVICES = {
     },
     getTrendingTopics: async (platform) => {
       try {
-        const response = await fetch(`/api/gemini`, {
+        const response = await fetch(`${API_BASE_URL}/api/gemini`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: 'trending', platform })
