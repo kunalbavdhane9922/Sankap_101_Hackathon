@@ -195,6 +195,32 @@ const Home = () => {
                 <AnalyticsCard key={account._id || account.platform + idx} account={account} analytics={analytics[account._id]} />
               ))}
             </div>
+
+            {/* Smart Content Suggestions (AI) */}
+            <div className="suggestions-section">
+              <div className="suggestions-title">Smart Content Suggestions (AI)</div>
+              <div className="suggestions-row">
+                <div className="suggestion-card">
+                  <span className="suggestion-icon" role="img" aria-label="idea">💡</span>
+                  <span className="suggestion-title">Post Idea</span>
+                  <span className="suggestion-info">Share a behind-the-scenes look at your creative process.</span>
+                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
+                </div>
+                <div className="suggestion-card">
+                  <span className="suggestion-icon" role="img" aria-label="clock">⏰</span>
+                  <span className="suggestion-title">Best Time to Post</span>
+                  <span className="suggestion-info">Wednesday at 6:00 PM</span>
+                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
+                </div>
+                <div className="suggestion-card">
+                  <span className="suggestion-icon" role="img" aria-label="tag">🏷️</span>
+                  <span className="suggestion-title">Suggested Hashtags</span>
+                  <span className="suggestion-hashtags">#Inspiration #BehindTheScenes #YourBrand</span>
+                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
+                </div>
+              </div>
+              <div className="suggestions-powered">Powered by AI & performance analytics</div>
+            </div>
             {/* Competitor Comparison Feature */}
             <CompetitorComparison niche="fitness" />
           </div>
