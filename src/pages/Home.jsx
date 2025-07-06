@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Home.css';
-import CompetitorComparison from "../components/CompetitorComparison";
+// import CompetitorComparison from "../components/CompetitorComparison";
 import API_BASE_URL from "../config";
 
 const platformColors = {
@@ -11,24 +11,7 @@ const platformColors = {
   Twitter: '#1DA1F2',
 };
 
-function CircularProgress({ percent, color, label, value, total }) {
-  const radius = 28;
-  const stroke = 6;
-  const norm = 2 * Math.PI * radius;
-  const offset = norm - (percent / 100) * norm;
-  return (
-    <div className="circular-progress">
-      <svg width="64" height="64">
-        <circle cx="32" cy="32" r={radius} stroke="#eee" strokeWidth={stroke} fill="none" />
-        <circle cx="32" cy="32" r={radius} stroke={color} strokeWidth={stroke} fill="none" strokeDasharray={norm} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.5s' }} />
-      </svg>
-      <div className="circular-progress-label">
-        <div style={{ fontWeight: 700, fontSize: 18 }}>{value}/{total}</div>
-        <div style={{ fontSize: 12 }}>{label}</div>
-      </div>
-    </div>
-  );
-}
+
 
 function AnalyticsCard({ account, analytics }) {
   return (
@@ -59,6 +42,11 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [starRating, setStarRating] = useState(0);
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
+  const feedbackModalRef = useRef(null);
 
   // Navbar button handlers
   const handleInboxClick = () => {
@@ -123,12 +111,7 @@ const Home = () => {
     : [50, 60, 55, 80, 65, 70, 60, 75, 60, 70, 65, 80, 60, 70]; // fallback
   const barChartLabels = ['Feb 5', 'Feb 7', 'Feb 9', 'Feb 11', 'Feb 13', 'Feb 15', 'Feb 17', 'Feb 19'];
 
-  // Example: dynamic summary and payments (mock for now, can be made dynamic)
-  const summary = [
-    { color: '#7d4cff', value: 12, total: 15 },
-    { color: '#ff6f4c', value: 12, total: 15 },
-    { color: '#00c287', value: 12, total: 15 },
-  ];
+  // Example: dynamic payments (mock for now, can be made dynamic)
   const payments = [
     { label: 'Average Income', value: 12380, color: '#7d4cff', percent: 75 },
     { label: 'Average Spend', value: 26200, color: '#22c55e', percent: 25 },
@@ -149,7 +132,7 @@ const Home = () => {
           <span className="dashboard-greeting-text">Welcome {username}!</span>
         </div>
         <div className="dashboard-controls">
-          <select className="dashboard-select"><option>Choose</option></select>
+          <button className="dashboard-icon-btn" onClick={() => setShowFeedbackModal(true)}><span role="img" aria-label="star">⭐</span></button>
           <button className="dashboard-icon-btn" onClick={handleInboxClick}><span role="img" aria-label="inbox">📥</span></button>
           <button className="dashboard-icon-btn dashboard-icon-btn-bell" onClick={handleBellClick}><span role="img" aria-label="bell">🔔</span></button>
           <button className="dashboard-icon-btn" onClick={handleUserClick}><span role="img" aria-label="user">👤</span></button>
@@ -160,6 +143,68 @@ const Home = () => {
                 <li style={{ padding: '10px 0', borderBottom: '1px solid #eee', color: '#444' }}>No new notifications</li>
                 {/* Add more notifications here */}
               </ul>
+            </div>
+          )}
+          {/* Feedback Modal */}
+          {showFeedbackModal && (
+            <div className="feedback-modal-backdrop" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.18)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="feedback-modal" ref={feedbackModalRef} style={{ background: '#fff', borderRadius: 16, boxShadow: '0 4px 32px rgba(0,0,0,0.13)', padding: 32, minWidth: 320, maxWidth: '90vw', textAlign: 'center', position: 'relative' }}>
+                <button onClick={() => setShowFeedbackModal(false)} style={{ position: 'absolute', top: 12, right: 16, background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#888' }}>&times;</button>
+                <h2 style={{ marginBottom: 16 }}>Rate Us</h2>
+                <div style={{ marginBottom: 18 }}>
+                  {[1,2,3,4,5].map(star => (
+                    <span
+                      key={star}
+                      style={{
+                        fontSize: 32,
+                        cursor: 'pointer',
+                        color: star <= starRating ? '#FFD700' : '#ccc',
+                        transition: 'color 0.2s'
+                      }}
+                      onClick={() => setStarRating(star)}
+                      onMouseOver={() => setStarRating(star)}
+                      onMouseLeave={() => setStarRating(starRating)}
+                      role="img"
+                      aria-label={star + ' star'}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <textarea
+                  value={feedbackText}
+                  onChange={e => setFeedbackText(e.target.value)}
+                  placeholder="Your feedback..."
+                  rows={4}
+                  style={{ width: '100%', borderRadius: 8, border: '1px solid #ccc', padding: 10, marginBottom: 18, resize: 'vertical' }}
+                />
+                <br />
+                <button
+                  style={{ background: '#7d4cff', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 28px', fontWeight: 600, fontSize: 16, cursor: 'pointer' }}
+                  onClick={async () => {
+                    setSubmittingFeedback(true);
+                    try {
+                      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: feedbackText, rating: starRating })
+                      });
+                      if (!res.ok) throw new Error('Failed to submit feedback');
+                      setShowFeedbackModal(false);
+                      setFeedbackText('');
+                      setStarRating(0);
+                      alert('Thank you for your feedback!');
+                    } catch (err) {
+                      alert('Error submitting feedback: ' + err.message);
+                    } finally {
+                      setSubmittingFeedback(false);
+                    }
+                  }}
+                  disabled={starRating === 0 || feedbackText.trim() === '' || submittingFeedback}
+                >
+                  {submittingFeedback ? 'Submitting...' : 'Submit'}
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -195,42 +240,10 @@ const Home = () => {
                 <AnalyticsCard key={account._id || account.platform + idx} account={account} analytics={analytics[account._id]} />
               ))}
             </div>
-
-            {/* Smart Content Suggestions (AI) */}
-            <div className="suggestions-section">
-              <div className="suggestions-title">Smart Content Suggestions (AI)</div>
-              <div className="suggestions-row">
-                <div className="suggestion-card">
-                  <span className="suggestion-icon" role="img" aria-label="idea">💡</span>
-                  <span className="suggestion-title">Post Idea</span>
-                  <span className="suggestion-info">Share a behind-the-scenes look at your creative process.</span>
-                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
-                </div>
-                <div className="suggestion-card">
-                  <span className="suggestion-icon" role="img" aria-label="clock">⏰</span>
-                  <span className="suggestion-title">Best Time to Post</span>
-                  <span className="suggestion-info">Wednesday at 6:00 PM</span>
-                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
-                </div>
-                <div className="suggestion-card">
-                  <span className="suggestion-icon" role="img" aria-label="tag">🏷️</span>
-                  <span className="suggestion-title">Suggested Hashtags</span>
-                  <span className="suggestion-hashtags">#Inspiration #BehindTheScenes #YourBrand</span>
-                  <span className="suggestion-info-icon" title="AI generated">ℹ️</span>
-                </div>
-              </div>
-              <div className="suggestions-powered">Powered by AI & performance analytics</div>
-            </div>
             {/* Competitor Comparison Feature */}
-            <CompetitorComparison niche="fitness" />
+            <SmartContentSuggestions />
           </div>
         <div className="dashboard-right">
-          <div className="dashboard-summary">
-            <h4>Account Summary</h4>
-            {summary.map((s, i) => (
-              <CircularProgress key={i} percent={Math.round((s.value/s.total)*100)} color={s.color} label="Video Lectures" value={s.value} total={s.total} />
-            ))}
-          </div>
           <div className="dashboard-payments">
             <h4>Payments</h4>
             {payments.map((p, i) => (
@@ -246,5 +259,47 @@ const Home = () => {
     </div>
   );
 };
+
+function SmartContentSuggestions() {
+  // Example static content, replace with real AI-powered data as needed
+  const suggestions = [
+    {
+      icon: '💡',
+      title: 'Post Idea',
+      text: 'Share a behind-the-scenes look at your creative process.',
+      tooltip: 'AI analyzed your recent posts and audience engagement to suggest this idea.'
+    },
+    {
+      icon: '⏰',
+      title: 'Best Time to Post',
+      text: 'Wednesday at 6:00 PM',
+      tooltip: 'AI recommends this time based on your followers\' activity patterns.'
+    },
+    {
+      icon: '🏷️',
+      title: 'Suggested Hashtags',
+      text: '#Inspiration #BehindTheScenes #YourBrand',
+      tooltip: 'AI selected hashtags to maximize reach and relevance.'
+    }
+  ];
+  return (
+    <div className="smart-suggestions-glass">
+      <h2 className="smart-suggestions-heading">Smart Content Suggestions (AI)</h2>
+      <div className="smart-suggestions-list">
+        {suggestions.map((s, i) => (
+          <div className="smart-suggestion-item" key={i}>
+            <span className="smart-suggestion-icon">{s.icon}</span>
+            <div className="smart-suggestion-content">
+              <div className="smart-suggestion-title">{s.title}</div>
+              <div className="smart-suggestion-text">{s.text}</div>
+            </div>
+            <span className="smart-suggestion-tooltip" title={s.tooltip}>🛈</span>
+          </div>
+        ))}
+      </div>
+      <div className="smart-suggestions-caption">Powered by AI & performance analytics</div>
+    </div>
+  );
+}
 
 export default Home; 
