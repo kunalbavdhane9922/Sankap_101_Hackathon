@@ -1,7 +1,7 @@
 # AI API Integration Documentation
 
 ## Overview
-This application now includes AI-powered features using the Google Gemini AI API with the provided API key: `AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs`
+This application now includes AI-powered features using the Google Gemini AI API with the provided API key: `AIzaSyCn2QW-3lY3cxIW1J5aO_tHZY0_KtndROM`
 
 ## 🔧 Configuration
 
@@ -9,7 +9,7 @@ This application now includes AI-powered features using the Google Gemini AI API
 The API key is configured in `src/config.js`:
 ```javascript
 export const AI_CONFIG = {
-  API_KEY: "AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs",
+  API_KEY: "AIzaSyCn2QW-3lY3cxIW1J5aO_tHZY0_KtndROM",
   GEMINI_API_URL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
   // ... other configurations
 };
