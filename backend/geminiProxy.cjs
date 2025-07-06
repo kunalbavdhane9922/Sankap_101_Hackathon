@@ -36,12 +36,14 @@ router.post('/api/gemini', async (req, res) => {
     });
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
+      console.error('Gemini API error:', errText); // Log Gemini API error
       return res.status(500).json({ error: 'Gemini API error', details: errText });
     }
     const geminiData = await geminiRes.json();
     const output = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
     res.json({ result: output });
   } catch (err) {
+    console.error('Gemini Proxy Server error:', err); // Log server error
     res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
