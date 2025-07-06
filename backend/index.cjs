@@ -31,6 +31,10 @@ app.get('/twitter', require('./twitter.cjs'));
 const compareCompetitors = require('./compareCompetitors.cjs');
 app.use(compareCompetitors);
 
+// Gemini AI proxy route
+const geminiProxy = require('./geminiProxy.cjs');
+app.use(geminiProxy);
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ 
