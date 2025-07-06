@@ -15,13 +15,45 @@ export default function Settings() {
     setError('');
     fetch(`${API_BASE_URL}/settings`)
       .then(res => res.json())
-      .then(d => { setData(d); setPrefs(d.preferences); })
+      .then(d => { 
+        setData(d); 
+        setPrefs(d.preferences);
+        
+        // Sync theme preference with dark mode toggle
+        const darkMode = localStorage.getItem('darkMode') === 'true';
+        const theme = darkMode ? 'dark' : 'light';
+        if (d.preferences.theme !== theme) {
+          setPrefs(prev => ({ ...prev, theme }));
+        }
+      })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
 
   const handleChange = (e) => {
-    setPrefs({ ...prefs, [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value });
+    const { name, type, checked, value } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setPrefs({ ...prefs, [name]: newValue });
+    
+    // If theme is changed, update dark mode toggle
+    if (name === 'theme') {
+      const isDark = newValue === 'dark';
+      localStorage.setItem('darkMode', isDark);
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      
+      // Dispatch storage event to notify other components
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'darkMode',
+        newValue: isDark.toString(),
+        oldValue: (!isDark).toString()
+      }));
+    }
   };
 
   const handleSave = async () => {

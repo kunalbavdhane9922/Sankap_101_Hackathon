@@ -1,4 +1,6 @@
-// Dummy caption generator utility
+import { AI_SERVICES } from '../config';
+
+// Dummy caption generator utility (fallback)
 // Usage: generateCaption({ filename, keywords }) => string
 
 const templates = [
@@ -24,10 +26,29 @@ export function generateCaption({ filename = '', keywords = [] }) {
   return templates[Math.floor(Math.random()*templates.length)];
 }
 
-// Simulate an async AI API call (replace with real API integration if needed)
+// AI-powered caption generation using OpenAI API
 export async function generateCaptionAI({ filename = '', keywords = [] }) {
-  // Simulate network delay
-  await new Promise(res => setTimeout(res, 700));
-  // Use the same logic for now, but you can replace this with a fetch to an AI API
-  return generateCaption({ filename, keywords }) + ' (AI)';
+  try {
+    // Create a prompt for the AI
+    let prompt = "Generate an engaging social media caption";
+    
+    if (keywords && keywords.length > 0) {
+      prompt += ` using these keywords: ${keywords.join(', ')}`;
+    }
+    
+    if (filename) {
+      prompt += ` for an image about: ${filename.split('.')[0].replace(/[-_]/g, ' ')}`;
+    }
+    
+    prompt += ". Make it engaging, authentic, and include relevant hashtags.";
+    
+    // Use the AI service
+    const result = await AI_SERVICES.openai.generateCaption(prompt);
+    return result;
+  } catch (error) {
+    console.error('AI Caption Generation Error:', error);
+    // Fallback to dummy caption
+    const fallback = generateCaption({ filename, keywords });
+    return fallback + ' (AI)';
+  }
 } 

@@ -1,4 +1,6 @@
-// Dummy sentiment analysis utility
+import { AI_SERVICES } from '../config';
+
+// Dummy sentiment analysis utility (fallback)
 // Usage: analyzeSentiment(text) => { sentiment: 'happy'|'sad'|'angry'|'neutral', score: -1..1 }
 
 const happyWords = ['happy', 'joy', 'love', 'great', 'awesome', 'excited', 'fun', 'smile'];
@@ -16,4 +18,16 @@ export function analyzeSentiment(text) {
   else if (score < -1) sentiment = 'angry';
   else if (score < 0) sentiment = 'sad';
   return { sentiment, score: Math.max(-1, Math.min(1, score/3)) };
+}
+
+// AI-powered sentiment analysis using OpenAI API
+export async function analyzeSentimentAI(text) {
+  try {
+    const result = await AI_SERVICES.openai.analyzeSentiment(text);
+    return result;
+  } catch (error) {
+    console.error('AI Sentiment Analysis Error:', error);
+    // Fallback to dummy sentiment analysis
+    return analyzeSentiment(text);
+  }
 } 

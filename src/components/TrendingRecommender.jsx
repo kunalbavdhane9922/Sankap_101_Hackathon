@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import API_BASE_URL from "../config";
+import { AI_SERVICES } from "../config";
 
 export default function TrendingRecommender({ platform, viewCount, avgViewCount }) {
   const [topics, setTopics] = useState(null);
@@ -12,16 +13,41 @@ export default function TrendingRecommender({ platform, viewCount, avgViewCount 
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE_URL}/trendingTopics`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ platform })
-      });
-      if (!res.ok) throw new Error('Failed to fetch trending topics');
-      const data = await res.json();
-      setTopics(data.topics);
+      // Try AI-powered trending topics first
+      const aiTopics = await AI_SERVICES.openai.getTrendingTopics(platform);
+      setTopics(aiTopics);
+      
+      // Also call the backend for additional data (fallback)
+      try {
+        const res = await fetch(`${API_BASE_URL}/trendingTopics`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ platform })
+        });
+        if (res.ok) {
+          const backendData = await res.json();
+          // Merge AI and backend topics
+          const mergedTopics = [...new Set([...aiTopics, ...backendData.topics])];
+          setTopics(mergedTopics);
+        }
+      } catch (backendError) {
+        console.log('Backend fallback failed, using AI topics only');
+      }
     } catch (e) {
       setError(e.message);
+      // Fallback to backend only
+      try {
+        const res = await fetch(`${API_BASE_URL}/trendingTopics`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ platform })
+        });
+        if (!res.ok) throw new Error('Failed to fetch trending topics');
+        const data = await res.json();
+        setTopics(data.topics);
+      } catch (backendError) {
+        setError('Both AI and backend services failed');
+      }
     } finally {
       setLoading(false);
     }

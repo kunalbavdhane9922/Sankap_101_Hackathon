@@ -50,7 +50,15 @@ export default function Schedule() {
   const [posts, setPosts] = useState(loadPosts());
   const [selectedDate, setSelectedDate] = useState(getToday());
 
-  useEffect(() => { savePosts(posts); }, [posts]);
+  useEffect(() => { 
+    savePosts(posts); 
+    // Dispatch storage event to notify sidebar about post changes
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'scheduledPosts',
+      newValue: JSON.stringify(posts),
+      oldValue: JSON.stringify(loadPosts())
+    }));
+  }, [posts]);
 
   // Calendar helpers
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
@@ -206,7 +214,7 @@ export default function Schedule() {
         </div>
         <div className="main-content" style={{ display: 'flex', gap: '40px' }}>
           {/* Posts Column */}
-          <div className="posts-column" style={{ flex: 1 }}>
+          <div className="posts-column" style={{ flex: 1, maxWidth: '500px' }}>
             <h2 style={{ marginBottom: 12 }}>Scheduled Posts ({selectedDate})</h2>
             {filteredPosts.length === 0 && <div style={{ color: '#888' }}>No posts scheduled for this day.</div>}
             {filteredPosts.map(post => (
@@ -237,7 +245,7 @@ export default function Schedule() {
             ))}
           </div>
           {/* Calendar Column */}
-          <div className="calendar-column" style={{ width: '300px' }}>
+          <div className="calendar-column" style={{ width: '400px', minWidth: '350px', flexShrink: 0 }}>
             <div className="calendar">
               <div className="calendar-header">
                 <span className="month">{today.toLocaleString('default', { month: 'long' })} {year}</span>
@@ -248,16 +256,33 @@ export default function Schedule() {
               <div className="calendar-days" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
                 {days.map(day => {
                   const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                  const hasPost = !!postsByDate[dateStr];
+                  const postsForDay = postsByDate[dateStr] || [];
+                  let bgColor = undefined;
+                  let tooltip = undefined;
+                  if (postsForDay.length > 0) {
+                    // Use the first post's platform for color
+                    const platform = postsForDay[0].platform;
+                    if (platform === 'instagram') bgColor = '#a18aff';
+                    else if (platform === 'facebook') bgColor = '#1877f2';
+                    else if (platform === 'youtube') bgColor = '#ff0000';
+                    else if (platform === 'twitter') bgColor = '#1da1f2';
+                    // Tooltip: show all post titles/content for the day
+                    tooltip = postsForDay.map(p => p.content?.slice(0, 40) || 'Post').join('\n');
+                  }
                   return (
                     <span
                       key={day}
                       className={
                         'calendar-day' +
                         (dateStr === selectedDate ? ' highlight' : '') +
-                        (hasPost ? ' has-post' : '')
+                        (postsForDay.length > 0 ? ' has-post' : '')
                       }
-                      style={{ cursor: 'pointer', background: dateStr === selectedDate ? '#a18aff' : hasPost ? '#e0e7ff' : undefined, color: dateStr === selectedDate ? '#fff' : undefined }}
+                      style={{
+                        cursor: 'pointer',
+                        background: dateStr === selectedDate ? '#a18aff' : bgColor,
+                        color: dateStr === selectedDate || bgColor ? '#fff' : undefined
+                      }}
+                      title={tooltip}
                       onClick={() => setSelectedDate(dateStr)}
                     >
                       {day}

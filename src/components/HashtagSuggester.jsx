@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import API_BASE_URL from "../config";
+import { AI_SERVICES } from "../config";
 
 const NICHES = ['default', 'fitness', 'travel', 'tech', 'fashion', 'education', 'finance', 'food', 'lifestyle', 'gaming'];
 
@@ -16,16 +17,52 @@ export default function HashtagSuggester({ content, platform, audience }) {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE_URL}/seoEngine`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, platform, audience, niche })
-      });
-      if (!res.ok) throw new Error('Failed to fetch suggestions');
-      const data = await res.json();
-      setSuggestions(data);
+      // Try AI-powered hashtag generation first
+      const aiHashtags = await AI_SERVICES.openai.generateHashtags(content, platform, niche);
+      
+      // Create suggestions object with AI-generated hashtags
+      const aiSuggestions = {
+        hashtags: aiHashtags,
+        trendingTags: aiHashtags.slice(0, 3), // Use first 3 as trending
+        title: `AI-generated title for ${platform} post`
+      };
+      
+      setSuggestions(aiSuggestions);
+      
+      // Also call the backend for additional data (fallback)
+      try {
+        const res = await fetch(`${API_BASE_URL}/seoEngine`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, platform, audience, niche })
+        });
+        if (res.ok) {
+          const backendData = await res.json();
+          // Merge AI and backend data
+          setSuggestions({
+            hashtags: [...new Set([...aiHashtags, ...backendData.hashtags])],
+            trendingTags: [...new Set([...aiSuggestions.trendingTags, ...backendData.trendingTags])],
+            title: backendData.title || aiSuggestions.title
+          });
+        }
+      } catch (backendError) {
+        console.log('Backend fallback failed, using AI suggestions only');
+      }
     } catch (e) {
       setError(e.message);
+      // Fallback to backend only
+      try {
+        const res = await fetch(`${API_BASE_URL}/seoEngine`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, platform, audience, niche })
+        });
+        if (!res.ok) throw new Error('Failed to fetch suggestions');
+        const data = await res.json();
+        setSuggestions(data);
+      } catch (backendError) {
+        setError('Both AI and backend services failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -39,13 +76,13 @@ export default function HashtagSuggester({ content, platform, audience }) {
   return (
     <div className="hashtag-suggester">
       <div style={{ marginBottom: 8 }}>
-        <label>Niche: </label>
-        <select value={niche} onChange={handleNicheChange}>
+        <label className="niche-label">Niche: </label>
+        <select className="niche-select" value={niche} onChange={handleNicheChange}>
           {NICHES.map((n) => (
             <option key={n} value={n}>{n.charAt(0).toUpperCase() + n.slice(1)}</option>
           ))}
         </select>
-        <button onClick={fetchSuggestions} disabled={loading} style={{ marginLeft: 8 }}>
+        <button className="suggest-btn" onClick={fetchSuggestions} disabled={loading} style={{ marginLeft: 8 }}>
           {loading ? 'Loading...' : 'Suggest Tags & Title'}
         </button>
       </div>
