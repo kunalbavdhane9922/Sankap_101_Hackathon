@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const router = express.Router();
 
-const GEMINI_API_KEY = "AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs";
+const GEMINI_API_KEY = "AIzaSyCn2QW-3lY3cxIW1J5aO_tHZY0_KtndROM";
 const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-latest:generateContent";
 
 // Helper to build prompt based on type
@@ -31,12 +31,24 @@ router.post('/api/gemini', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        }
       })
     });
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
       console.error('Gemini API error:', errText); // Log Gemini API error
+      console.error('Response status:', geminiRes.status);
+      console.error('Response headers:', Object.fromEntries(geminiRes.headers.entries()));
       return res.status(500).json({ error: 'Gemini API error', details: errText });
     }
     const geminiData = await geminiRes.json();
