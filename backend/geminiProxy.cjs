@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const router = express.Router();
 
 const GEMINI_API_KEY = "AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs";
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-latest:generateContent";
 
 // Helper to build prompt based on type
 function buildPrompt(type, data) {
