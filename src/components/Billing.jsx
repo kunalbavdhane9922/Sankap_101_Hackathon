@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import SentimentAnalyzer from './SentimentAnalyzer';
-import '../pages/Home.css';
 import API_BASE_URL from "../config";
 
 export default function Billing() {
@@ -19,34 +18,76 @@ export default function Billing() {
   }, []);
 
   return (
-    <div className="dashboard-main">
-      <div className="dashboard-section">
-        <h2>Billing</h2>
-        {loading && <div>Loading...</div>}
-        {error && <div style={{ color: 'red' }}>{error}</div>}
+    <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif', background: '#f4f4ff', minHeight: '100vh' }}>
+      <div style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+        padding: '32px'
+      }}>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '700', color: '#333', marginBottom: '24px' }}>Billing</h2>
+
+        {loading && <div style={{ fontSize: '1rem', color: '#666' }}>Loading billing info...</div>}
+        {error && <div style={{ color: 'red', marginBottom: '16px' }}>{error}</div>}
+
         {data && (
           <>
-            <div className="dashboard-payments" style={{ marginBottom: 24 }}>
-              <h4>Billing History</h4>
-              <ul style={{ paddingLeft: 18 }}>
+            {/* Billing History */}
+            <div style={{ marginBottom: 24 }}>
+              <h4 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '12px' }}>Billing History</h4>
+              <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
                 {data.history.map((h, i) => (
-                  <li key={i} style={{ marginBottom: 6 }}>
-                    <span style={{ fontWeight: 500 }}>{h.date}:</span> ${h.amount} - {h.desc}
+                  <li key={i} style={{
+                    marginBottom: 12,
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    background: '#f8fafc',
+                    borderLeft: '4px solid #7d4cff',
+                    fontSize: '0.95rem'
+                  }}>
+                    <span style={{ fontWeight: 600 }}>{h.date}</span>: <span style={{ color: '#16a34a', fontWeight: 600 }}>${h.amount}</span> – {h.desc}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="dashboard-payment-card" style={{ background: '#7d4cff', color: '#fff', marginBottom: 24 }}>
-              <div className="dashboard-payment-label"><b>Upcoming Payment</b></div>
-              <div>{data.upcoming.date}: ${data.upcoming.amount} - {data.upcoming.desc}</div>
-            </div>
-            <div className="dashboard-section" style={{ marginBottom: 0 }}>
-              <b>AI Tips:</b>
-              <ul style={{ paddingLeft: 18 }}>
+
+            {/* Upcoming Payment */}
+            <div style={{
+              background: 'linear-gradient(90deg, #ede9fe, #f5f3ff)', // Light lavender gradient
+  color: '#333',
+  padding: '16px 24px',
+  borderRadius: '12px',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+  marginBottom: 24,
+  border: '1px solid #dcd6f7'
+}}>
+              <div style={{ fontWeight: '600', marginBottom: 6 }}>
+    📅 Upcoming Payment
+  </div>
+  <div>
+    <b>{data.upcoming.date}</b>: ${data.upcoming.amount} – {data.upcoming.desc}
+  </div>
+</div>
+
+            {/* AI Tips */}
+            <div style={{ marginBottom: 0 }}>
+              <h4 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '12px' }}>AI Tips</h4>
+              <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
                 {data.aiTips.map((tip, i) => (
-                  <li key={i} style={{ marginBottom: 8 }}>
+                  <li key={i} style={{
+                    marginBottom: 12,
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    background: '#f8fafc',
+                    borderLeft: '4px solid #7d4cff',
+                    fontSize: '0.95rem'
+                  }}>
                     {tip}
-                    <SentimentAnalyzer text={tip} />
+                    <div style={{ marginTop: 6 }}>
+                      <SentimentAnalyzer text={tip} />
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -56,4 +97,4 @@ export default function Billing() {
       </div>
     </div>
   );
-} 
+}

@@ -146,26 +146,32 @@ export default function Schedule() {
           {/* Email feedback */}
           {emailFeedback && <div style={{ color: '#007a00', marginBottom: 10 }}>{emailFeedback}</div>}
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-            <select value={platform} onChange={e => setPlatform(e.target.value)}>
+            <select 
+              value={platform} 
+              onChange={e => setPlatform(e.target.value)}
+              style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #ddd' }}
+              title="Select the social media platform for your post"
+            >
+              <option value="" disabled>Select Platform</option>
               {PLATFORMS.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
             </select>
             <input
               type="text"
-              placeholder="Image URL (optional)"
+              placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
               value={image}
               onChange={e => setImage(e.target.value)}
               style={{ flex: 1, minWidth: 180 }}
             />
             <input
               type="number"
-              placeholder="Current View Count"
+              placeholder="Enter current view count (e.g., 1000)"
               value={viewCount}
               onChange={e => setViewCount(Number(e.target.value))}
               style={{ width: 140 }}
             />
             <input
               type="number"
-              placeholder="Avg View Count"
+              placeholder="Enter average view count (e.g., 1200)"
               value={avgViewCount}
               onChange={e => setAvgViewCount(Number(e.target.value))}
               style={{ width: 140 }}
@@ -175,6 +181,7 @@ export default function Schedule() {
               value={scheduledTime}
               onChange={e => setScheduledTime(e.target.value)}
               style={{ width: 160 }}
+              title="Select the date to schedule your post"
             />
             <input
               type="number"
@@ -183,13 +190,13 @@ export default function Schedule() {
               value={reminderMinutes}
               onChange={e => setReminderMinutes(Number(e.target.value))}
               style={{ width: 120 }}
-              placeholder="Remind (min before)"
+              placeholder="Reminder minutes (e.g., 30)"
               title="Remind me this many minutes before scheduled time"
             />
             <button onClick={handleSchedule} className="schedule-post-btn"> Schedule Post</button>
           </div>
           <textarea
-            placeholder="Write your post content here..."
+            placeholder="Write your post content here... (e.g., 'Check out this amazing product! 🚀 #innovation #tech')"
             value={content}
             onChange={e => setContent(e.target.value)}
             style={{ width: '100%', marginTop: 12, minHeight: 60, borderRadius: 8, padding: 8 }}
