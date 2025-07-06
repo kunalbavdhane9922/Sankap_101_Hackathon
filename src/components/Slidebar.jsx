@@ -124,7 +124,7 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-      <h1 className="sidebar-title">SIMBA</h1>
+      <center><h1 className="sidebar-title">SIMBA</h1></center>
       <button onClick={toggleDarkMode} className="dark-toggle">
         {darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
       </button>
