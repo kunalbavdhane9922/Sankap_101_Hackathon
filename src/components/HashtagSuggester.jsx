@@ -18,7 +18,7 @@ export default function HashtagSuggester({ content, platform, audience }) {
     setError('');
     try {
       // Try AI-powered hashtag generation first
-      const aiHashtags = await AI_SERVICES.openai.generateHashtags(content, platform, niche);
+      const aiHashtags = await AI_SERVICES.gemini.generateHashtags(content, platform, niche);
       
       // Create suggestions object with AI-generated hashtags
       const aiSuggestions = {

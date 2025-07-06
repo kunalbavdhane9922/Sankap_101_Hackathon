@@ -20,13 +20,13 @@ export function analyzeSentiment(text) {
   return { sentiment, score: Math.max(-1, Math.min(1, score/3)) };
 }
 
-// AI-powered sentiment analysis using OpenAI API
+// AI-powered sentiment analysis using Gemini AI
 export async function analyzeSentimentAI(text) {
   try {
-    const result = await AI_SERVICES.openai.analyzeSentiment(text);
+    const result = await AI_SERVICES.gemini.analyzeSentiment(text);
     return result;
   } catch (error) {
-    console.error('AI Sentiment Analysis Error:', error);
+    console.error('Gemini Sentiment Analysis Error:', error);
     // Fallback to dummy sentiment analysis
     return analyzeSentiment(text);
   }

@@ -26,7 +26,7 @@ export function generateCaption({ filename = '', keywords = [] }) {
   return templates[Math.floor(Math.random()*templates.length)];
 }
 
-// AI-powered caption generation using OpenAI API
+// AI-powered caption generation using Gemini AI
 export async function generateCaptionAI({ filename = '', keywords = [] }) {
   try {
     // Create a prompt for the AI
@@ -43,10 +43,10 @@ export async function generateCaptionAI({ filename = '', keywords = [] }) {
     prompt += ". Make it engaging, authentic, and include relevant hashtags.";
     
     // Use the AI service
-    const result = await AI_SERVICES.openai.generateCaption(prompt);
+    const result = await AI_SERVICES.gemini.generateCaption(prompt);
     return result;
   } catch (error) {
-    console.error('AI Caption Generation Error:', error);
+    console.error('Gemini Caption Generation Error:', error);
     // Fallback to dummy caption
     const fallback = generateCaption({ filename, keywords });
     return fallback + ' (AI)';

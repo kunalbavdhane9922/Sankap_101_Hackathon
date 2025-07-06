@@ -18,7 +18,7 @@ export default function SentimentAnalyzer({ text }) {
         const aiResult = await analyzeSentimentAI(text);
         setSentiment(aiResult);
       } catch (error) {
-        console.error('AI sentiment analysis failed, using fallback:', error);
+        console.error('Gemini sentiment analysis failed, using fallback:', error);
         // Fallback to dummy sentiment analysis
         const fallbackResult = analyzeSentiment(text);
         setSentiment(fallbackResult);

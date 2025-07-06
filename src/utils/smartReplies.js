@@ -10,13 +10,13 @@ export function generateReplies(content) {
   ];
 }
 
-// AI-powered smart replies using OpenAI API
+// AI-powered smart replies using Gemini AI
 export async function generateRepliesAI(content) {
   try {
-    const replies = await AI_SERVICES.openai.generateReplies(content);
+    const replies = await AI_SERVICES.gemini.generateReplies(content);
     return replies;
   } catch (error) {
-    console.error('AI Smart Replies Error:', error);
+    console.error('Gemini Smart Replies Error:', error);
     // Fallback to dummy replies
     return generateReplies(content);
   }

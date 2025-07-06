@@ -18,7 +18,7 @@ const ReplySuggestions = ({ content }) => {
         const aiReplies = await generateRepliesAI(content);
         setReplies(aiReplies);
       } catch (error) {
-        console.error('AI smart replies failed, using fallback:', error);
+        console.error('Gemini smart replies failed, using fallback:', error);
         // Fallback to dummy replies
         const fallbackReplies = generateReplies(content);
         setReplies(fallbackReplies);

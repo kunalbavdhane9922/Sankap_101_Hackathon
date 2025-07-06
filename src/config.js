@@ -1,50 +1,40 @@
 const API_BASE_URL = "https://sankap-101-hackathon-1.onrender.com";
 
-// AI API Configuration
+// AI API Configuration - Gemini AI
 export const AI_CONFIG = {
   API_KEY: "AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs",
-  OPENAI_API_URL: "https://api.openai.com/v1",
-  GOOGLE_AI_URL: "https://generativelanguage.googleapis.com/v1beta/models",
+  GEMINI_API_URL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
   // Add other AI service endpoints as needed
 };
 
-// AI Service Functions
+// AI Service Functions - Gemini AI
 export const AI_SERVICES = {
-  // OpenAI GPT for caption generation, sentiment analysis, etc.
-  openai: {
+  // Gemini AI for caption generation, sentiment analysis, etc.
+  gemini: {
     generateCaption: async (prompt) => {
       try {
-        const response = await fetch(`${AI_CONFIG.OPENAI_API_URL}/chat/completions`, {
+        const response = await fetch(`${AI_CONFIG.GEMINI_API_URL}?key=${AI_CONFIG.API_KEY}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${AI_CONFIG.API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "system",
-                content: "You are a social media expert who creates engaging captions and content."
-              },
-              {
-                role: "user",
-                content: prompt
-              }
-            ],
-            max_tokens: 150,
-            temperature: 0.7
+            contents: [{
+              parts: [{
+                text: `You are a social media expert who creates engaging captions and content. ${prompt}`
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          throw new Error('OpenAI API request failed');
+          throw new Error('Gemini API request failed');
         }
         
         const data = await response.json();
-        return data.choices[0].message.content;
+        return data.candidates[0].content.parts[0].text;
       } catch (error) {
-        console.error('OpenAI API Error:', error);
+        console.error('Gemini API Error:', error);
         // Fallback to dummy response
         return "Amazing content! Thanks for sharing this with us. #awesome #content";
       }
@@ -52,38 +42,29 @@ export const AI_SERVICES = {
 
     analyzeSentiment: async (text) => {
       try {
-        const response = await fetch(`${AI_CONFIG.OPENAI_API_URL}/chat/completions`, {
+        const response = await fetch(`${AI_CONFIG.GEMINI_API_URL}?key=${AI_CONFIG.API_KEY}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${AI_CONFIG.API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "system",
-                content: "Analyze the sentiment of the given text and return a JSON response with 'sentiment' (positive/negative/neutral) and 'score' (-1 to 1)."
-              },
-              {
-                role: "user",
-                content: `Analyze sentiment: "${text}"`
-              }
-            ],
-            max_tokens: 100,
-            temperature: 0.3
+            contents: [{
+              parts: [{
+                text: `Analyze the sentiment of the given text and return a JSON response with 'sentiment' (positive/negative/neutral) and 'score' (-1 to 1). Text: "${text}"`
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          throw new Error('OpenAI API request failed');
+          throw new Error('Gemini API request failed');
         }
         
         const data = await response.json();
-        const result = JSON.parse(data.choices[0].message.content);
+        const result = JSON.parse(data.candidates[0].content.parts[0].text);
         return result;
       } catch (error) {
-        console.error('OpenAI API Error:', error);
+        console.error('Gemini API Error:', error);
         // Fallback to dummy sentiment analysis
         return { sentiment: 'neutral', score: 0 };
       }
@@ -91,77 +72,59 @@ export const AI_SERVICES = {
 
     generateHashtags: async (content, platform, niche) => {
       try {
-        const response = await fetch(`${AI_CONFIG.OPENAI_API_URL}/chat/completions`, {
+        const response = await fetch(`${AI_CONFIG.GEMINI_API_URL}?key=${AI_CONFIG.API_KEY}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${AI_CONFIG.API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "system",
-                content: `You are a social media expert. Generate relevant hashtags for ${platform} in the ${niche} niche. Return only hashtags separated by spaces.`
-              },
-              {
-                role: "user",
-                content: `Generate hashtags for: "${content}"`
-              }
-            ],
-            max_tokens: 100,
-            temperature: 0.7
+            contents: [{
+              parts: [{
+                text: `Generate 5 relevant hashtags for a ${platform} post in the ${niche} niche with this content: "${content}". Return only the hashtags separated by spaces.`
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          throw new Error('OpenAI API request failed');
+          throw new Error('Gemini API request failed');
         }
         
         const data = await response.json();
-        const hashtags = data.choices[0].message.content.split(' ').filter(tag => tag.startsWith('#'));
+        const hashtags = data.candidates[0].content.parts[0].text.split(' ').filter(tag => tag.startsWith('#'));
         return hashtags;
       } catch (error) {
-        console.error('OpenAI API Error:', error);
+        console.error('Gemini API Error:', error);
         // Fallback to dummy hashtags
-        return ['#content', '#socialmedia', '#post'];
+        return ['#content', '#socialmedia', '#post', '#engagement', '#viral'];
       }
     },
 
     generateReplies: async (content) => {
       try {
-        const response = await fetch(`${AI_CONFIG.OPENAI_API_URL}/chat/completions`, {
+        const response = await fetch(`${AI_CONFIG.GEMINI_API_URL}?key=${AI_CONFIG.API_KEY}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${AI_CONFIG.API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "system",
-                content: "Generate 3 engaging social media replies that users might comment on this post. Make them positive, curious, and engaging."
-              },
-              {
-                role: "user",
-                content: `Generate replies for: "${content}"`
-              }
-            ],
-            max_tokens: 150,
-            temperature: 0.8
+            contents: [{
+              parts: [{
+                text: `Generate 3 engaging social media replies that users might comment on this post. Make them positive, curious, and engaging. Post: "${content}"`
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          throw new Error('OpenAI API request failed');
+          throw new Error('Gemini API request failed');
         }
         
         const data = await response.json();
-        const replies = data.choices[0].message.content.split('\n').filter(reply => reply.trim());
+        const replies = data.candidates[0].content.parts[0].text.split('\n').filter(reply => reply.trim());
         return replies.slice(0, 3);
       } catch (error) {
-        console.error('OpenAI API Error:', error);
+        console.error('Gemini API Error:', error);
         // Fallback to dummy replies
         return [
           "Wow, this is so helpful!",
@@ -173,38 +136,29 @@ export const AI_SERVICES = {
 
     getTrendingTopics: async (platform) => {
       try {
-        const response = await fetch(`${AI_CONFIG.OPENAI_API_URL}/chat/completions`, {
+        const response = await fetch(`${AI_CONFIG.GEMINI_API_URL}?key=${AI_CONFIG.API_KEY}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${AI_CONFIG.API_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "system",
-                content: `Generate 3 trending topic suggestions for ${platform}. Make them engaging and relevant to current trends.`
-              },
-              {
-                role: "user",
-                content: "What are trending topics right now?"
-              }
-            ],
-            max_tokens: 150,
-            temperature: 0.8
+            contents: [{
+              parts: [{
+                text: `Generate 3 trending topic suggestions for ${platform}. Make them engaging and relevant to current trends.`
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          throw new Error('OpenAI API request failed');
+          throw new Error('Gemini API request failed');
         }
         
         const data = await response.json();
-        const topics = data.choices[0].message.content.split('\n').filter(topic => topic.trim());
+        const topics = data.candidates[0].content.parts[0].text.split('\n').filter(topic => topic.trim());
         return topics.slice(0, 3);
       } catch (error) {
-        console.error('OpenAI API Error:', error);
+        console.error('Gemini API Error:', error);
         // Fallback to dummy topics
         return [
           "Share your best productivity hack",

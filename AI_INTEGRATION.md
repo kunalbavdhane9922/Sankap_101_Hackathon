@@ -1,7 +1,7 @@
 # AI API Integration Documentation
 
 ## Overview
-This application now includes AI-powered features using the OpenAI API with the provided API key: `AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs`
+This application now includes AI-powered features using the Google Gemini AI API with the provided API key: `AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs`
 
 ## 🔧 Configuration
 
@@ -10,7 +10,7 @@ The API key is configured in `src/config.js`:
 ```javascript
 export const AI_CONFIG = {
   API_KEY: "AIzaSyA0lO0q8iwmraUEotzY1dS93cG7LBfjmVs",
-  OPENAI_API_URL: "https://api.openai.com/v1",
+  GEMINI_API_URL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
   // ... other configurations
 };
 ```
@@ -19,31 +19,31 @@ export const AI_CONFIG = {
 
 ### 1. **Caption Generation** (`src/utils/captionGen.js`)
 - **Function**: `generateCaptionAI({ filename, keywords })`
-- **AI Service**: OpenAI GPT-3.5-turbo
+- **AI Service**: Google Gemini Pro
 - **Purpose**: Generate engaging social media captions
 - **Fallback**: Dummy caption templates
 
 ### 2. **Sentiment Analysis** (`src/utils/sentiment.js`)
 - **Function**: `analyzeSentimentAI(text)`
-- **AI Service**: OpenAI GPT-3.5-turbo
+- **AI Service**: Google Gemini Pro
 - **Purpose**: Analyze text sentiment (positive/negative/neutral)
 - **Fallback**: Rule-based sentiment analysis
 
 ### 3. **Hashtag Generation** (`src/components/HashtagSuggester.jsx`)
-- **Function**: `AI_SERVICES.openai.generateHashtags(content, platform, niche)`
-- **AI Service**: OpenAI GPT-3.5-turbo
+- **Function**: `AI_SERVICES.gemini.generateHashtags(content, platform, niche)`
+- **AI Service**: Google Gemini Pro
 - **Purpose**: Generate relevant hashtags for social media posts
 - **Fallback**: Backend hashtag suggestions
 
 ### 4. **Smart Replies** (`src/utils/smartReplies.js`)
 - **Function**: `generateRepliesAI(content)`
-- **AI Service**: OpenAI GPT-3.5-turbo
+- **AI Service**: Google Gemini Pro
 - **Purpose**: Generate engaging reply suggestions for posts
 - **Fallback**: Dummy reply templates
 
 ### 5. **Trending Topics** (`src/components/TrendingRecommender.jsx`)
-- **Function**: `AI_SERVICES.openai.getTrendingTopics(platform)`
-- **AI Service**: OpenAI GPT-3.5-turbo
+- **Function**: `AI_SERVICES.gemini.getTrendingTopics(platform)`
+- **AI Service**: Google Gemini Pro
 - **Purpose**: Suggest trending topics for content creation
 - **Fallback**: Backend trending topics
 
@@ -54,7 +54,7 @@ All AI functionality is centralized in the `AI_SERVICES` object:
 
 ```javascript
 export const AI_SERVICES = {
-  openai: {
+  gemini: {
     generateCaption: async (prompt) => { /* ... */ },
     analyzeSentiment: async (text) => { /* ... */ },
     generateHashtags: async (content, platform, niche) => { /* ... */ },
@@ -88,7 +88,7 @@ export const AI_SERVICES = {
 
 ### 1. **API Call Flow**
 ```
-User Action → Component → AI Service → OpenAI API → Response → UI Update
+User Action → Component → AI Service → Gemini API → Response → UI Update
                 ↓
             Fallback (if AI fails) → Backend API → Response → UI Update
                 ↓
@@ -111,7 +111,7 @@ User Action → Component → AI Service → OpenAI API → Response → UI Upda
 ```javascript
 import { AI_SERVICES } from '../config';
 
-const caption = await AI_SERVICES.openai.generateCaption(
+const caption = await AI_SERVICES.gemini.generateCaption(
   "Generate a caption for a fitness post about morning workouts"
 );
 ```
@@ -126,7 +126,7 @@ const sentiment = await analyzeSentimentAI("I love this amazing content!");
 
 ### Hashtag Generation
 ```javascript
-const hashtags = await AI_SERVICES.openai.generateHashtags(
+const hashtags = await AI_SERVICES.gemini.generateHashtags(
   "Morning workout routine", 
   "instagram", 
   "fitness"
@@ -142,7 +142,7 @@ const hashtags = await AI_SERVICES.openai.generateHashtags(
 - **Recommendation**: Implement backend proxy for API calls
 
 ### Rate Limiting
-- OpenAI API has rate limits
+- Gemini API has rate limits
 - Consider implementing request throttling
 - Monitor API usage and costs
 
